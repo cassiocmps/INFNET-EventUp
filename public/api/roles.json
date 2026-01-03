@@ -1,0 +1,12 @@
+{
+  "roles": [
+    {
+      "id": "organizer",
+      "label": "Organizer"
+    },
+    {
+      "id": "participant",
+      "label": "Participant"
+    }
+  ]
+}

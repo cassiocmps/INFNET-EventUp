@@ -1,0 +1,21 @@
+.card {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #e2e8f0;
+  border-radius: 0.95rem;
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.withShadow {
+  box-shadow: 0 10px 30px -24px rgba(15, 23, 42, 0.45);
+}
+
+@media (min-width: 768px) {
+  .card {
+    padding: 1.5rem;
+    border-radius: 1rem;
+  }
+}

@@ -1,0 +1,34 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.options {
+  display: flex;
+  gap: 0.55rem;
+}
+
+.option {
+  flex: 1;
+  border: 1px solid #d1d5db;
+  border-radius: 0.75rem;
+  background-color: #ffffff;
+  color: #334155;
+  padding: 0.65rem 0.5rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.optionActive {
+  border-color: #f59e0b;
+  background-color: #fffbeb;
+  color: #0f172a;
+}

@@ -1,0 +1,32 @@
+.button {
+  width: 100%;
+  border: none;
+  border-radius: 0.75rem;
+  background-color: #f59e0b;
+  color: #0f172a;
+  padding: 0.82rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
+}
+
+.button:hover:not(:disabled) {
+  background-color: #f59e0b;
+  box-shadow: 0 8px 16px rgba(245, 158, 11, 0.35);
+  transform: translateY(-2px);
+}
+
+.button:focus {
+  outline: 2px solid #f59e0b;
+  outline-offset: 2px;
+}
+
+.button:disabled {
+  background-color: #d1d5db;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
