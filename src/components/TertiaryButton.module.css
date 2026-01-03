@@ -1,0 +1,28 @@
+.button {
+  border: none;
+  background: transparent;
+  color: #0f172a;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.15rem;
+  cursor: pointer;
+  padding: 0.25rem 0;
+  align-self: center;
+  transition: color 0.2s ease;
+}
+
+.button:hover {
+  color: #fbbf24;
+}
+
+.button:focus {
+  outline: 2px solid #fbbf24;
+  outline-offset: 2px;
+  border-radius: 0.35rem;
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

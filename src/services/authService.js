@@ -49,6 +49,38 @@ async function signIn(email, password) {
   }
 }
 
+async function signUp(profile) {
+  if (!profile.name || !profile.email || !profile.password || !profile.role) {
+    throw new Error("All fields are required");
+  }
+
+  try {
+    const signupResponse = await fetch("/api/signup.json");
+    const signupData = await signupResponse.json();
+
+    if (!signupData.accepted) {
+      throw new Error("Sign up not accepted by server");
+    }
+
+    const passwordHash = await hashPassword(profile.password);
+
+    const newUser = {
+      name: profile.name.trim(),
+      email: profile.email.trim().toLowerCase(),
+      role: profile.role,
+      passwordHash,
+    };
+
+    const users = await getUsers();
+    usersStore = [...users, newUser];
+
+    return { success: true, user: newUser };
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const authService = {
   signIn,
+  signUp,
 };

@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import FormInput from "../components/FormInput";
 import Logo from "../components/Logo";
 import PrimaryButton from "../components/PrimaryButton";
+import TertiaryButton from "../components/TertiaryButton";
 import Toast from "../components/Toast";
 import { authService } from "../services/authService";
 import { PATHS } from "../routes/paths";
@@ -113,6 +114,13 @@ export default function SignInPage() {
             <PrimaryButton type="submit" disabled={!canSubmit}>
               {isSubmitting ? "Signing in..." : "Enter"}
             </PrimaryButton>
+
+            <TertiaryButton
+              type="button"
+              onClick={() => navigate(PATHS.signup)}
+            >
+              New here? Join our amazing community
+            </TertiaryButton>
           </form>
         </div>
       </section>
