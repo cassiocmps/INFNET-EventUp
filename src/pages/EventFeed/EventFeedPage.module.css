@@ -2,11 +2,15 @@
   margin-top: 2rem;
 }
 
+.headerWrapper {
+  margin-bottom: 2rem;
+}
+
 .header {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .subtitle {
@@ -27,6 +31,20 @@
 
 .refreshSection {
   display: none;
+}
+
+.filtersRow {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.clearFiltersButton {
+  width: 100%;
+  align-self: end;
+}
+
+.clearFiltersButton button {
+  width: 100%;
 }
 
 .loading {
@@ -89,6 +107,19 @@
   .subtitle {
     font-size: 1.125rem;
     margin: 0;
+  }
+
+  .filtersRow {
+    grid-template-columns: minmax(240px, 1fr) 220px auto;
+    align-items: center;
+  }
+
+  .clearFiltersButton {
+    width: auto;
+  }
+
+  .clearFiltersButton button {
+    width: auto;
   }
 
   .eventList {

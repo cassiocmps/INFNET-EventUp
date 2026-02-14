@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { PATHS } from "../../routes/paths";
@@ -11,6 +11,9 @@ export function useEventFeed() {
   const navigate = useNavigate();
   const { isParticipant } = useAuth();
   const [events, setEvents] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [pullDistance, setPullDistance] = useState(0);
@@ -23,8 +26,18 @@ export function useEventFeed() {
       navigate(PATHS.dashboard);
       return;
     }
+    loadCategories();
     fetchEvents();
   }, [isParticipant, navigate]);
+
+  async function loadCategories() {
+    try {
+      const data = await eventService.getCategories();
+      setCategories(data);
+    } catch (error) {
+      console.error("Error loading categories:", error);
+    }
+  }
 
   async function fetchEvents() {
     try {
@@ -100,14 +113,43 @@ export function useEventFeed() {
     }
   }
 
+  function clearFilters() {
+    setSearchTerm("");
+    setSelectedCategory("");
+  }
+
+  const filteredEvents = useMemo(() => {
+    const normalizedSearch = searchTerm.trim().toLowerCase();
+
+    return events.filter((event) => {
+      const matchesCategory =
+        !selectedCategory || event.category === selectedCategory;
+
+      const matchesSearch =
+        !normalizedSearch ||
+        event.title?.toLowerCase().includes(normalizedSearch) ||
+        event.description?.toLowerCase().includes(normalizedSearch) ||
+        event.location?.toLowerCase().includes(normalizedSearch);
+
+      return matchesCategory && matchesSearch;
+    });
+  }, [events, searchTerm, selectedCategory]);
+
   return {
     events,
+    filteredEvents,
+    categories,
+    searchTerm,
+    selectedCategory,
     isLoading,
     isRefreshing,
     pullDistance,
     toast,
     setToast,
     handleRefresh,
+    setSearchTerm,
+    setSelectedCategory,
+    clearFilters,
     handleTouchStart,
     handleTouchMove,
     handleTouchEnd,

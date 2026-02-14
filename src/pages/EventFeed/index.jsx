@@ -9,13 +9,19 @@ import styles from "./EventFeedPage.module.css";
 
 export default function EventFeedPage() {
   const {
-    events,
+    filteredEvents,
+    categories,
+    searchTerm,
+    selectedCategory,
     isLoading,
     isRefreshing,
     pullDistance,
     toast,
     setToast,
     handleRefresh,
+    setSearchTerm,
+    setSelectedCategory,
+    clearFilters,
     handleTouchStart,
     handleTouchMove,
     handleTouchEnd,
@@ -56,9 +62,19 @@ export default function EventFeedPage() {
           <EventFeedHeader
             onRefresh={handleRefresh}
             isRefreshing={isRefreshing}
+            categories={categories}
+            searchTerm={searchTerm}
+            selectedCategory={selectedCategory}
+            onSearchChange={setSearchTerm}
+            onCategoryChange={setSelectedCategory}
+            onClearFilters={clearFilters}
           />
 
-          {events.length === 0 ? <EmptyState /> : <EventList events={events} />}
+          {filteredEvents.length === 0 ? (
+            <EmptyState />
+          ) : (
+            <EventList events={filteredEvents} />
+          )}
         </div>
       </Card>
     </>
