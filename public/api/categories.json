@@ -1,0 +1,14 @@
+{
+  "categories": [
+    { "value": "workshop", "label": "Workshop" },
+    { "value": "fair", "label": "Fair" },
+    { "value": "seminar", "label": "Seminar" },
+    { "value": "conference", "label": "Conference" },
+    { "value": "meetup", "label": "Meetup" },
+    { "value": "sports", "label": "Sports" },
+    { "value": "cultural", "label": "Cultural" },
+    { "value": "community", "label": "Community" },
+    { "value": "charity", "label": "Charity" },
+    { "value": "other", "label": "Other" }
+  ]
+}

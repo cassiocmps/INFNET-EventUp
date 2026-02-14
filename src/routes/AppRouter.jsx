@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
+import CreateEventPage from "../pages/CreateEventPage";
 import DashboardPage from "../pages/DashboardPage";
 import SignInPage from "../pages/SignInPage";
 import SignUpPage from "../pages/SignUpPage";
@@ -10,22 +11,11 @@ export default function AppRouter() {
     <BrowserRouter>
       <Routes>
         <Route path={PATHS.signin} element={<SignInPage />} />
-        <Route
-          path={PATHS.signup}
-          element={
-            <MainLayout>
-              <SignUpPage />
-            </MainLayout>
-          }
-        />
-        <Route
-          path={PATHS.dashboard}
-          element={
-            <MainLayout>
-              <DashboardPage />
-            </MainLayout>
-          }
-        />
+        <Route element={<MainLayout />}>
+          <Route path={PATHS.signup} element={<SignUpPage />} />
+          <Route path={PATHS.dashboard} element={<DashboardPage />} />
+          <Route path={PATHS.createEvent} element={<CreateEventPage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

@@ -1,0 +1,38 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.select {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 0.75rem;
+  padding: 0.72rem 0.85rem;
+  font-size: 0.98rem;
+  color: #0f172a;
+  background-color: #ffffff;
+  transition: border-color 0.2s ease;
+  cursor: pointer;
+}
+
+.select:focus {
+  border-color: #f59e0b;
+  outline: none;
+}
+
+.selectError {
+  border-color: #dc2626;
+}
+
+.errorText {
+  color: #b91c1c;
+  font-size: 0.78rem;
+  font-weight: 500;
+}

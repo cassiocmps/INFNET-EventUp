@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 import FormInput from "../components/FormInput";
 import Logo from "../components/Logo";
 import PrimaryButton from "../components/PrimaryButton";
@@ -17,6 +18,7 @@ const initialForm = {
 export default function SignInPage() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { login } = useAuth();
   const [form, setForm] = useState(initialForm);
   const [toast, setToast] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -55,7 +57,8 @@ export default function SignInPage() {
     setIsSubmitting(true);
 
     try {
-      await authService.signIn(form.email, form.password);
+      const result = await authService.signIn(form.email, form.password);
+      login(result.user);
       navigate(PATHS.dashboard);
     } catch (error) {
       setToast({
