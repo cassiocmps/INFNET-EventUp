@@ -1,0 +1,186 @@
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.rowButton {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.rowContent {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: background-color 0.2s;
+}
+
+.rowButton:hover .rowContent {
+  background-color: #f9fafb;
+}
+
+.expandedContent {
+  padding: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 500px;
+  }
+}
+
+.categoryCell {
+  display: flex;
+  align-items: center;
+}
+
+.category {
+  background: #6366f1;
+  color: #fff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.titleCell {
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.dateCell {
+  display: flex;
+  align-items: center;
+}
+
+.dateValue {
+  color: #6b7280;
+  font-size: 0.9375rem;
+}
+
+.description {
+  color: #4b5563;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  margin: 0 0 1rem 0;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.detailRow {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.label {
+  color: #6b7280;
+  font-weight: 500;
+  min-width: 80px;
+}
+
+.value {
+  color: #1f2937;
+  flex: 1;
+}
+
+@media (min-width: 768px) {
+  .card {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin: 0;
+  }
+
+  .card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .rowContent {
+    padding: 1rem 1.25rem;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .categoryCell {
+    flex: 0 0 120px;
+    min-width: 120px;
+  }
+
+  .category {
+    font-size: 0.8125rem;
+  }
+
+  .titleCell {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .title {
+    font-size: 1rem;
+  }
+
+  .dateCell {
+    flex: 0 0 140px;
+    min-width: 140px;
+  }
+
+  .dateValue {
+    font-size: 0.875rem;
+  }
+
+  .expandedContent {
+    padding: 1.25rem;
+  }
+
+  .details {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .detailRow {
+    font-size: 0.8125rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .titleCell {
+    min-width: 300px;
+  }
+
+  .title {
+    font-size: 1.125rem;
+  }
+}

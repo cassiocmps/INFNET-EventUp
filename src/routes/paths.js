@@ -3,4 +3,5 @@ export const PATHS = {
   signup: "/signup",
   dashboard: "/dashboard",
   createEvent: "/create-event",
+  eventFeed: "/events",
 };

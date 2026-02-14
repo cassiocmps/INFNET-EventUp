@@ -9,7 +9,7 @@ import styles from "./DashboardPage.module.css";
 export default function DashboardPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { currentUser, isOrganizer } = useAuth();
+  const { currentUser, isOrganizer, isParticipant } = useAuth();
   const [toast, setToast] = useState(null);
 
   useEffect(() => {
@@ -57,10 +57,17 @@ export default function DashboardPage() {
               </div>
             </>
           )}
-          {!isOrganizer && (
-            <p className={styles.text}>
-              Discover and participate in amazing community events.
-            </p>
+          {isParticipant && (
+            <>
+              <p className={styles.text}>
+                Discover and participate in amazing community events.
+              </p>
+              <div className={styles.actions}>
+                <PrimaryButton onClick={() => navigate(PATHS.eventFeed)}>
+                  Browse events
+                </PrimaryButton>
+              </div>
+            </>
           )}
         </div>
       </div>

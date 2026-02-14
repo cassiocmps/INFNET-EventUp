@@ -40,6 +40,7 @@ export function AuthProvider({ children }) {
     login,
     logout,
     isOrganizer: currentUser?.role === "organizer",
+    isParticipant: currentUser?.role === "participant",
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
