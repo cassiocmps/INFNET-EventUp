@@ -1,15 +1,23 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { generatePath } from "react-router-dom";
 import { Users, Pencil } from "lucide-react";
 import { CategoryIcon } from "../../utils/categoryIcons";
 import SecondaryButton from "../../components/SecondaryButton";
 import TertiaryButton from "../../components/TertiaryButton";
+import { PATHS } from "../../routes/paths";
 import styles from "./OrganizerEventCard.module.css";
 
 export default function OrganizerEventCard({ event, onCancel }) {
+  const navigate = useNavigate();
   const [isCancelling, setIsCancelling] = useState(false);
   const { id, title, category, enrolled = 0 } = event;
 
   const categoryLabel = category.charAt(0).toUpperCase() + category.slice(1);
+
+  function handleEdit() {
+    navigate(generatePath(PATHS.editEvent, { eventId: id }));
+  }
 
   async function handleCancel() {
     setIsCancelling(true);
@@ -36,7 +44,11 @@ export default function OrganizerEventCard({ event, onCancel }) {
       <h3 className={styles.title}>{title}</h3>
 
       <div className={styles.actions}>
-        <SecondaryButton type="button" leftIcon={<Pencil size={16} />} disabled>
+        <SecondaryButton
+          type="button"
+          leftIcon={<Pencil size={16} />}
+          onClick={handleEdit}
+        >
           Edit
         </SecondaryButton>
         <TertiaryButton

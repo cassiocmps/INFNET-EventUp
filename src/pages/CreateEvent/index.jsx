@@ -1,4 +1,4 @@
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Loader2 } from "lucide-react";
 import Card from "../../components/Card";
 import FormInput from "../../components/FormInput";
 import FormSelect from "../../components/FormSelect";
@@ -12,6 +12,8 @@ import styles from "./CreateEventPage.module.css";
 
 export default function CreateEventPage() {
   const {
+    isEditMode,
+    isLoadingEvent,
     form,
     errors,
     categories,
@@ -24,6 +26,8 @@ export default function CreateEventPage() {
     handleCancel,
   } = useCreateEvent();
 
+  const pageTitle = isEditMode ? "Edit event" : "Create new event";
+
   return (
     <>
       {toast && (
@@ -35,102 +39,111 @@ export default function CreateEventPage() {
       )}
 
       <Card withShadow>
-        <PageHeader
-          title="Create new event"
-          subtitle="Fill in the details to create an event for your community."
-          logoSize="medium"
-        />
+        <PageHeader title={pageTitle} logoSize="medium" />
 
-        <form className={styles.form} onSubmit={handleSubmit} noValidate>
-          <FormInput
-            id="title"
-            name="title"
-            type="text"
-            label="Event title"
-            value={form.title}
-            placeholder="Enter a clear and concise title"
-            onChange={handleChange}
-            error={errors.title}
-          />
+        {isEditMode && isLoadingEvent ? (
+          <div className={styles.loading}>
+            <Loader2 size={28} className={styles.loadingSpinner} />
+            <p>Loading event...</p>
+          </div>
+        ) : (
+          <form className={styles.form} onSubmit={handleSubmit} noValidate>
+            <FormInput
+              id="title"
+              name="title"
+              type="text"
+              label="Event title"
+              value={form.title}
+              placeholder="Enter a clear and concise title"
+              onChange={handleChange}
+              error={errors.title}
+            />
 
-          <FormTextArea
-            id="description"
-            name="description"
-            label="Event description"
-            value={form.description}
-            placeholder="Describe what participants can expect from this event"
-            onChange={handleChange}
-            error={errors.description}
-            rows={6}
-          />
+            <FormTextArea
+              id="description"
+              name="description"
+              label="Event description"
+              value={form.description}
+              placeholder="Describe what participants can expect from this event"
+              onChange={handleChange}
+              error={errors.description}
+              rows={6}
+            />
 
-          <FormSelect
-            id="category"
-            name="category"
-            label="Category"
-            value={form.category}
-            placeholder="Select a category"
-            onChange={handleChange}
-            error={errors.category}
-            options={categories}
-            showCategoryIcons
-          />
+            <FormSelect
+              id="category"
+              name="category"
+              label="Category"
+              value={form.category}
+              placeholder="Select a category"
+              onChange={handleChange}
+              error={errors.category}
+              options={categories}
+              showCategoryIcons
+            />
 
-          <FormInput
-            id="date"
-            name="date"
-            type="date"
-            label="Date"
-            value={form.date}
-            onChange={handleChange}
-            error={errors.date}
-          />
+            <FormInput
+              id="date"
+              name="date"
+              type="date"
+              label="Date"
+              value={form.date}
+              onChange={handleChange}
+              error={errors.date}
+            />
 
-          <FormInput
-            id="time"
-            name="time"
-            type="time"
-            label="Time"
-            value={form.time}
-            onChange={handleChange}
-            error={errors.time}
-          />
+            <FormInput
+              id="time"
+              name="time"
+              type="time"
+              label="Time"
+              value={form.time}
+              onChange={handleChange}
+              error={errors.time}
+            />
 
-          <FormInput
-            id="location"
-            name="location"
-            type="text"
-            label="Location"
-            value={form.location}
-            placeholder="Enter the event venue or address"
-            onChange={handleChange}
-            error={errors.location}
-          />
+            <FormInput
+              id="location"
+              name="location"
+              type="text"
+              label="Location"
+              value={form.location}
+              placeholder="Enter the event venue or address"
+              onChange={handleChange}
+              error={errors.location}
+            />
 
-          <FormInput
-            id="capacity"
-            name="capacity"
-            type="number"
-            label="Capacity"
-            value={form.capacity}
-            placeholder="Maximum number of participants"
-            onChange={handleChange}
-            error={errors.capacity}
-          />
+            <FormInput
+              id="capacity"
+              name="capacity"
+              type="number"
+              label="Capacity"
+              value={form.capacity}
+              placeholder="Maximum number of participants"
+              onChange={handleChange}
+              error={errors.capacity}
+            />
 
-          <PrimaryButton type="submit" disabled={!canSubmit}>
-            {isSubmitting ? "Creating event..." : "Create event"}
-          </PrimaryButton>
+            <PrimaryButton type="submit" disabled={!canSubmit}>
+              {isSubmitting
+                ? isEditMode
+                  ? "Saving..."
+                  : "Creating event..."
+                : isEditMode
+                  ? "Save changes"
+                  : "Create event"}
+            </PrimaryButton>
 
-          <SecondaryButton
-            type="button"
-            onClick={handleCancel}
-            leftIcon={<ChevronLeft size={18} />}
-            fullWidth
-          >
-            Cancel
-          </SecondaryButton>
-        </form>
+            <SecondaryButton
+              type="button"
+              onClick={handleCancel}
+              leftIcon={<ChevronLeft size={18} />}
+              fullWidth
+            >
+              Cancel
+            </SecondaryButton>
+          </form>
+        )}
       </Card>
     </>
   );

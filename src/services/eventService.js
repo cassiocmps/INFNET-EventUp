@@ -87,12 +87,48 @@ async function createEvent({
   }
 }
 
+async function getEventById(id) {
+  const events = await getEvents();
+  return events.find((event) => event.id === id) || null;
+}
+
 async function getEventsByOrganizer(organizerId) {
   const events = await getEvents();
   return events.filter(
     (event) =>
       event.organizerId === organizerId && event.status !== "cancelled",
   );
+}
+
+async function updateEvent({
+  id,
+  title,
+  description,
+  category,
+  date,
+  time,
+  location,
+  capacity,
+}) {
+  await sleep(SIMULATED_LATENCY_MS);
+
+  const events = await getEvents();
+  eventsStore = events.map((event) =>
+    event.id === id
+      ? {
+          ...event,
+          title: title.trim(),
+          description: description.trim(),
+          category,
+          date,
+          time,
+          location,
+          capacity,
+        }
+      : event,
+  );
+
+  return { success: true };
 }
 
 async function cancelEvent(eventId) {
@@ -167,7 +203,9 @@ export const eventService = {
   getEvents,
   getCategories,
   createEvent,
+  getEventById,
   getEventsByOrganizer,
+  updateEvent,
   cancelEvent,
   toggleFavoriteForUser,
   registerForEventForUser,

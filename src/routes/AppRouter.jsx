@@ -16,6 +16,7 @@ export default function AppRouter() {
           <Route path={PATHS.signup} element={<SignUpPage />} />
           <Route path={PATHS.dashboard} element={<DashboardPage />} />
           <Route path={PATHS.createEvent} element={<CreateEventPage />} />
+          <Route path={PATHS.editEvent} element={<CreateEventPage />} />
           <Route path={PATHS.eventFeed} element={<EventFeedPage />} />
         </Route>
       </Routes>

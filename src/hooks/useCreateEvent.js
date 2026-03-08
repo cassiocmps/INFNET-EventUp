@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { eventService } from "../services/eventService";
 import { PATHS } from "../routes/paths";
@@ -72,6 +72,8 @@ function validateForm({
 
 export function useCreateEvent() {
   const navigate = useNavigate();
+  const { eventId } = useParams();
+  const isEditMode = Boolean(eventId);
   const { currentUser, isOrganizer } = useAuth();
   const [form, setForm] = useState(defaultForm);
   const [errors, setErrors] = useState({
@@ -85,6 +87,7 @@ export function useCreateEvent() {
   });
   const [categories, setCategories] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoadingEvent, setIsLoadingEvent] = useState(isEditMode);
   const [toast, setToast] = useState(null);
 
   useEffect(() => {
@@ -122,6 +125,41 @@ export function useCreateEvent() {
 
     loadCategories();
   }, []);
+
+  useEffect(() => {
+    if (!isEditMode) return;
+
+    async function loadEvent() {
+      setIsLoadingEvent(true);
+      try {
+        const event = await eventService.getEventById(eventId);
+        if (!event) {
+          navigate(PATHS.dashboard, {
+            state: { errorMessage: "Event not found." },
+          });
+          return;
+        }
+        setForm({
+          title: event.title || "",
+          description: event.description || "",
+          category: event.category || "",
+          date: event.date || "",
+          time: event.time || "",
+          location: event.location || "",
+          capacity: event.capacity != null ? String(event.capacity) : "",
+        });
+      } catch {
+        setToast({
+          message: "Failed to load event data. Please try again.",
+          type: "error",
+        });
+      } finally {
+        setIsLoadingEvent(false);
+      }
+    }
+
+    loadEvent();
+  }, [isEditMode, eventId, navigate]);
 
   const canSubmit = useMemo(() => {
     return (
@@ -166,23 +204,36 @@ export function useCreateEvent() {
     setIsSubmitting(true);
 
     try {
-      await eventService.createEvent({
-        title: form.title,
-        description: form.description,
-        category: form.category,
-        date: form.date,
-        time: form.time,
-        location: form.location,
-        capacity: Number(form.capacity),
-        organizerId: currentUser?.id,
-        organizerName: currentUser?.name,
-      });
-
-      navigate(PATHS.dashboard, {
-        state: {
-          successMessage: "Event created successfully!",
-        },
-      });
+      if (isEditMode) {
+        await eventService.updateEvent({
+          id: eventId,
+          title: form.title,
+          description: form.description,
+          category: form.category,
+          date: form.date,
+          time: form.time,
+          location: form.location,
+          capacity: Number(form.capacity),
+        });
+        navigate(PATHS.dashboard, {
+          state: { successMessage: "Event updated successfully!" },
+        });
+      } else {
+        await eventService.createEvent({
+          title: form.title,
+          description: form.description,
+          category: form.category,
+          date: form.date,
+          time: form.time,
+          location: form.location,
+          capacity: Number(form.capacity),
+          organizerId: currentUser?.id,
+          organizerName: currentUser?.name,
+        });
+        navigate(PATHS.dashboard, {
+          state: { successMessage: "Event created successfully!" },
+        });
+      }
     } catch (error) {
       setToast({
         message: error.message || "Failed to create event. Please try again.",
@@ -198,6 +249,8 @@ export function useCreateEvent() {
   }
 
   return {
+    isEditMode,
+    isLoadingEvent,
     form,
     errors,
     categories,

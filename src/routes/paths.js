@@ -3,5 +3,6 @@ export const PATHS = {
   signup: "/signup",
   dashboard: "/dashboard",
   createEvent: "/create-event",
+  editEvent: "/edit-event/:eventId",
   eventFeed: "/events",
 };
