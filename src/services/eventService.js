@@ -1,4 +1,5 @@
 import { userStore } from "./userStore";
+import { notificationService } from "./notificationService";
 
 let eventsStore = null;
 let categoriesStore = null;
@@ -113,6 +114,8 @@ async function updateEvent({
   await sleep(SIMULATED_LATENCY_MS);
 
   const events = await getEvents();
+  const oldEvent = events.find((e) => e.id === id);
+
   eventsStore = events.map((event) =>
     event.id === id
       ? {
@@ -129,6 +132,22 @@ async function updateEvent({
       : event,
   );
 
+  if (oldEvent) {
+    const changedFields = [];
+    if (oldEvent.date !== date) changedFields.push("date");
+    if (oldEvent.time !== time) changedFields.push("time");
+    if (oldEvent.location !== location) changedFields.push("location");
+
+    if (changedFields.length > 0) {
+      await notificationService.notifyRegisteredParticipants(
+        id,
+        title.trim(),
+        "update",
+        `The event "${title.trim()}" was updated. See new details.`,
+      );
+    }
+  }
+
   return { success: true };
 }
 
@@ -136,11 +155,21 @@ async function cancelEvent(eventId) {
   await sleep(SIMULATED_LATENCY_MS);
 
   const events = await getEvents();
-  eventsStore = events.map((event) =>
-    event.id === eventId ? { ...event, status: "cancelled" } : event,
+  const event = events.find((e) => e.id === eventId);
+
+  eventsStore = events.map((e) =>
+    e.id === eventId ? { ...e, status: "cancelled" } : e,
   );
 
-  // Notifications TBD
+  if (event) {
+    await notificationService.notifyRegisteredParticipants(
+      eventId,
+      event.title,
+      "cancellation",
+      `The event "${event.title}" has been cancelled.`,
+    );
+  }
+
   return { success: true };
 }
 

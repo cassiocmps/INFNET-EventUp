@@ -57,6 +57,7 @@ export default function CreateEventPage() {
               placeholder="Enter a clear and concise title"
               onChange={handleChange}
               error={errors.title}
+              disabled={isEditMode}
             />
 
             <FormTextArea

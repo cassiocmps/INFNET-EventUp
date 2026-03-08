@@ -9,10 +9,13 @@ import {
   LogOut,
 } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
+import { useNotifications } from "../../hooks/useNotifications";
 import Card from "../../components/Card";
 import PrimaryButton from "../../components/PrimaryButton";
 import SecondaryButton from "../../components/SecondaryButton";
 import Tabs from "../../components/Tabs";
+import NotificationBell from "./NotificationBell";
+import NotificationPanel from "./NotificationPanel";
 import ParticipantEventCard from "./ParticipantEventCard";
 import OrganizerEventCard from "./OrganizerEventCard";
 import { PATHS } from "../../routes/paths";
@@ -30,6 +33,8 @@ export default function DashboardContent({
 }) {
   const navigate = useNavigate();
   const { currentUser, isOrganizer, isParticipant, logout } = useAuth();
+  const { notifications, unreadCount, isPanelOpen, togglePanel, closePanel } =
+    useNotifications();
 
   function handleLogout() {
     logout();
@@ -48,13 +53,29 @@ export default function DashboardContent({
           <h1 className={styles.title}>
             Welcome{currentUser?.name ? `, ${currentUser.name}` : " to EventUp"}
           </h1>
-          <SecondaryButton
-            type="button"
-            onClick={handleLogout}
-            leftIcon={<LogOut size={16} />}
-          >
-            Logout
-          </SecondaryButton>
+          <div className={styles.topBarActions}>
+            {isParticipant && (
+              <div className={styles.bellWrapper}>
+                <NotificationBell
+                  unreadCount={unreadCount}
+                  onClick={togglePanel}
+                />
+                {isPanelOpen && (
+                  <NotificationPanel
+                    notifications={notifications}
+                    onClose={closePanel}
+                  />
+                )}
+              </div>
+            )}
+            <SecondaryButton
+              type="button"
+              onClick={handleLogout}
+              leftIcon={<LogOut size={16} />}
+            >
+              Logout
+            </SecondaryButton>
+          </div>
         </div>
         {isOrganizer && (
           <>
