@@ -4,7 +4,7 @@ import EventFeedLoadingState from "./EventFeedLoadingState";
 import EventFeedHeader from "./EventFeedHeader";
 import EventList from "./EventList";
 import EmptyState from "./EmptyState";
-import { useEventFeed } from "./useEventFeed";
+import { useEventFeed } from "../../hooks/useEventFeed";
 import styles from "./EventFeedPage.module.css";
 
 export default function EventFeedPage() {
@@ -73,7 +73,7 @@ export default function EventFeedPage() {
           {filteredEvents.length === 0 ? (
             <EmptyState />
           ) : (
-            <EventList events={filteredEvents} />
+            <EventList events={filteredEvents} setToast={setToast} />
           )}
         </div>
       </Card>

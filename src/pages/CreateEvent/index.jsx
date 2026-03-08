@@ -6,7 +6,8 @@ import FormTextArea from "../../components/FormTextArea";
 import PageHeader from "../../components/PageHeader";
 import PrimaryButton from "../../components/PrimaryButton";
 import SecondaryButton from "../../components/SecondaryButton";
-import { useCreateEvent } from "./useCreateEvent";
+import Toast from "../../components/Toast";
+import { useCreateEvent } from "../../hooks/useCreateEvent";
 import styles from "./CreateEventPage.module.css";
 
 export default function CreateEventPage() {
@@ -16,66 +17,78 @@ export default function CreateEventPage() {
     categories,
     canSubmit,
     isSubmitting,
+    toast,
+    setToast,
     handleChange,
     handleSubmit,
     handleCancel,
   } = useCreateEvent();
 
   return (
-    <Card withShadow>
-      <PageHeader
-        title="Create new event"
-        subtitle="Fill in the details to create an event for your community."
-        logoSize="medium"
-      />
+    <>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
 
-      <form className={styles.form} onSubmit={handleSubmit} noValidate>
-        <FormInput
-          id="title"
-          name="title"
-          type="text"
-          label="Event title"
-          value={form.title}
-          placeholder="Enter a clear and concise title"
-          onChange={handleChange}
-          error={errors.title}
+      <Card withShadow>
+        <PageHeader
+          title="Create new event"
+          subtitle="Fill in the details to create an event for your community."
+          logoSize="medium"
         />
 
-        <FormTextArea
-          id="description"
-          name="description"
-          label="Event description"
-          value={form.description}
-          placeholder="Describe what participants can expect from this event"
-          onChange={handleChange}
-          error={errors.description}
-          rows={6}
-        />
+        <form className={styles.form} onSubmit={handleSubmit} noValidate>
+          <FormInput
+            id="title"
+            name="title"
+            type="text"
+            label="Event title"
+            value={form.title}
+            placeholder="Enter a clear and concise title"
+            onChange={handleChange}
+            error={errors.title}
+          />
 
-        <FormSelect
-          id="category"
-          name="category"
-          label="Category"
-          value={form.category}
-          placeholder="Select a category"
-          onChange={handleChange}
-          error={errors.category}
-          options={categories}
-        />
+          <FormTextArea
+            id="description"
+            name="description"
+            label="Event description"
+            value={form.description}
+            placeholder="Describe what participants can expect from this event"
+            onChange={handleChange}
+            error={errors.description}
+            rows={6}
+          />
 
-        <PrimaryButton type="submit" disabled={!canSubmit}>
-          {isSubmitting ? "Creating event..." : "Create event"}
-        </PrimaryButton>
+          <FormSelect
+            id="category"
+            name="category"
+            label="Category"
+            value={form.category}
+            placeholder="Select a category"
+            onChange={handleChange}
+            error={errors.category}
+            options={categories}
+          />
 
-        <SecondaryButton
-          type="button"
-          onClick={handleCancel}
-          leftIcon={<BackIcon size={18} />}
-          fullWidth
-        >
-          Cancel
-        </SecondaryButton>
-      </form>
-    </Card>
+          <PrimaryButton type="submit" disabled={!canSubmit}>
+            {isSubmitting ? "Creating event..." : "Create event"}
+          </PrimaryButton>
+
+          <SecondaryButton
+            type="button"
+            onClick={handleCancel}
+            leftIcon={<BackIcon size={18} />}
+            fullWidth
+          >
+            Cancel
+          </SecondaryButton>
+        </form>
+      </Card>
+    </>
   );
 }

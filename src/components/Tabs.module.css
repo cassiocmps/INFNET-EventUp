@@ -1,0 +1,39 @@
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+  margin-bottom: 2rem;
+}
+
+.tab {
+  background: none;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #64748b;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: #475569;
+}
+
+.activeTab {
+  color: #6366f1;
+  border-bottom-color: #6366f1;
+}
+
+@media (min-width: 1024px) {
+  .tabs {
+    gap: 1rem;
+  }
+
+  .tab {
+    font-size: 1.0625rem;
+  }
+}

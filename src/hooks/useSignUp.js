@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { authService } from "../../services/authService";
-import { PATHS } from "../../routes/paths";
+import { authService } from "../services/authService";
+import { PATHS } from "../routes/paths";
 
 const defaultForm = {
   name: "",

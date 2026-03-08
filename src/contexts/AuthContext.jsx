@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { eventService } from "../services/eventService";
 
 const AuthContext = createContext(null);
 
@@ -36,23 +37,23 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("currentUser");
   }
 
-  function toggleFavorite(eventId) {
-    if (!currentUser) return;
-
-    const currentFavorites = currentUser.favorites || [];
-    const isFavorited = currentFavorites.includes(eventId);
-
-    const updatedFavorites = isFavorited
-      ? currentFavorites.filter((id) => id !== eventId)
-      : [...currentFavorites, eventId];
-
-    const updatedUser = {
-      ...currentUser,
-      favorites: updatedFavorites,
-    };
-
+  function syncCurrentUser(updatedUser) {
     setCurrentUser(updatedUser);
     localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+  }
+
+  async function toggleFavorite(eventId) {
+    if (!currentUser) return;
+
+    try {
+      const updatedUser = await eventService.toggleFavoriteForUser({
+        user: currentUser,
+        eventId,
+      });
+      syncCurrentUser(updatedUser);
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+    }
   }
 
   function isFavorite(eventId) {
@@ -60,42 +61,32 @@ export function AuthProvider({ children }) {
     return (currentUser.favorites || []).includes(eventId);
   }
 
-  function registerForEvent(eventId) {
+  async function registerForEvent(eventId) {
     if (!currentUser) return;
 
-    const currentRegistrations = currentUser.registrations || [];
-    const isAlreadyRegistered = currentRegistrations.includes(eventId);
-
-    if (isAlreadyRegistered) {
-      return;
+    try {
+      const updatedUser = await eventService.registerForEventForUser({
+        user: currentUser,
+        eventId,
+      });
+      syncCurrentUser(updatedUser);
+    } catch (error) {
+      console.error("Error registering for event:", error);
     }
-
-    const updatedRegistrations = [...currentRegistrations, eventId];
-
-    const updatedUser = {
-      ...currentUser,
-      registrations: updatedRegistrations,
-    };
-
-    setCurrentUser(updatedUser);
-    localStorage.setItem("currentUser", JSON.stringify(updatedUser));
   }
 
-  function unregisterFromEvent(eventId) {
+  async function unregisterFromEvent(eventId) {
     if (!currentUser) return;
 
-    const currentRegistrations = currentUser.registrations || [];
-    const updatedRegistrations = currentRegistrations.filter(
-      (id) => id !== eventId,
-    );
-
-    const updatedUser = {
-      ...currentUser,
-      registrations: updatedRegistrations,
-    };
-
-    setCurrentUser(updatedUser);
-    localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+    try {
+      const updatedUser = await eventService.unregisterFromEventForUser({
+        user: currentUser,
+        eventId,
+      });
+      syncCurrentUser(updatedUser);
+    } catch (error) {
+      console.error("Error unregistering from event:", error);
+    }
   }
 
   function isRegistered(eventId) {

@@ -3,9 +3,10 @@ import { useAuth } from "../../contexts/AuthContext";
 import FavoriteIcon from "../../assets/icons/FavoriteIcon";
 import PrimaryButton from "../../components/PrimaryButton";
 import TertiaryButton from "../../components/TertiaryButton";
+import { useRegistrationAction } from "../../hooks/useRegistrationAction";
 import styles from "./EventCard.module.css";
 
-export default function EventCard({ event }) {
+export default function EventCard({ event, setToast }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const {
     toggleFavorite,
@@ -30,6 +31,14 @@ export default function EventCard({ event }) {
   const formattedDate = new Date(date).toLocaleDateString();
   const favorited = isFavorite(id);
   const registered = isRegistered(id);
+  const { isLoading: isRegistrationLoading, toggleRegistration } =
+    useRegistrationAction({
+      eventId: id,
+      isRegistered: registered,
+      registerForEvent,
+      unregisterFromEvent,
+      setToast,
+    });
 
   function handleFavoriteClick(e) {
     e.stopPropagation();
@@ -37,11 +46,7 @@ export default function EventCard({ event }) {
   }
 
   function handleRegisterClick() {
-    if (registered) {
-      unregisterFromEvent(id);
-    } else {
-      registerForEvent(id);
-    }
+    toggleRegistration();
   }
 
   return (
@@ -109,12 +114,24 @@ export default function EventCard({ event }) {
           {isParticipant && (
             <div className={styles.registrationSection}>
               {registered ? (
-                <TertiaryButton type="button" onClick={handleRegisterClick}>
-                  Cancel Registration
+                <TertiaryButton
+                  type="button"
+                  onClick={handleRegisterClick}
+                  disabled={isRegistrationLoading}
+                >
+                  {isRegistrationLoading
+                    ? "Cancelling..."
+                    : "Cancel Registration"}
                 </TertiaryButton>
               ) : (
-                <PrimaryButton type="button" onClick={handleRegisterClick}>
-                  Confirm Attendance
+                <PrimaryButton
+                  type="button"
+                  onClick={handleRegisterClick}
+                  disabled={isRegistrationLoading}
+                >
+                  {isRegistrationLoading
+                    ? "Confirming..."
+                    : "Confirm Attendance"}
                 </PrimaryButton>
               )}
               {registered && (

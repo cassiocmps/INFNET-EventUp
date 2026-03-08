@@ -1,7 +1,8 @@
 import Card from "../../components/Card";
 import PageHeader from "../../components/PageHeader";
+import Toast from "../../components/Toast";
 import SignUpForm from "./SignUpForm";
-import { useSignUp } from "./useSignUp";
+import { useSignUp } from "../../hooks/useSignUp";
 
 export default function SignUpPage() {
   const {
@@ -11,6 +12,8 @@ export default function SignUpPage() {
     selectedRole,
     canSubmit,
     isSubmitting,
+    toast,
+    setToast,
     handleChange,
     handleSubmit,
     handleCancel,
@@ -18,25 +21,35 @@ export default function SignUpPage() {
   } = useSignUp();
 
   return (
-    <Card withShadow>
-      <PageHeader
-        title="Create your profile"
-        subtitle="Join local events as an organizer or participant."
-        logoSize="medium"
-      />
+    <>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
 
-      <SignUpForm
-        form={form}
-        errors={errors}
-        roles={roles}
-        selectedRole={selectedRole}
-        canSubmit={canSubmit}
-        isSubmitting={isSubmitting}
-        handleChange={handleChange}
-        handleSubmit={handleSubmit}
-        handleCancel={handleCancel}
-        setSelectedRole={setSelectedRole}
-      />
-    </Card>
+      <Card withShadow>
+        <PageHeader
+          title="Create your profile"
+          subtitle="Join local events as an organizer or participant."
+          logoSize="medium"
+        />
+
+        <SignUpForm
+          form={form}
+          errors={errors}
+          roles={roles}
+          selectedRole={selectedRole}
+          canSubmit={canSubmit}
+          isSubmitting={isSubmitting}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          handleCancel={handleCancel}
+          setSelectedRole={setSelectedRole}
+        />
+      </Card>
+    </>
   );
 }

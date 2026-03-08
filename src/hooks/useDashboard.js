@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
-import { eventService } from "../../services/eventService";
+import { useAuth } from "../contexts/AuthContext";
+import { eventService } from "../services/eventService";
 
 export function useDashboard() {
   const location = useLocation();

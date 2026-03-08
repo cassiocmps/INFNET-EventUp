@@ -1,9 +1,17 @@
 import Toast from "../../components/Toast";
 import DashboardContent from "./DashboardContent";
-import { useDashboard } from "./useDashboard";
+import { useDashboard } from "../../hooks/useDashboard";
 
 export default function DashboardPage() {
-  const { toast, setToast } = useDashboard();
+  const {
+    toast,
+    setToast,
+    activeTab,
+    setActiveTab,
+    favoriteEvents,
+    registeredEvents,
+    isLoading,
+  } = useDashboard();
 
   return (
     <>
@@ -14,7 +22,14 @@ export default function DashboardPage() {
           onClose={() => setToast(null)}
         />
       )}
-      <DashboardContent />
+      <DashboardContent
+        setToast={setToast}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        favoriteEvents={favoriteEvents}
+        registeredEvents={registeredEvents}
+        isLoading={isLoading}
+      />
     </>
   );
 }

@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
-import { PATHS } from "../../routes/paths";
-import { eventService } from "../../services/eventService";
+import { useAuth } from "../contexts/AuthContext";
+import { PATHS } from "../routes/paths";
+import { eventService } from "../services/eventService";
 
 const PULL_THRESHOLD = 70;
 const MAX_PULL_DISTANCE = 120;
@@ -43,8 +43,6 @@ export function useEventFeed() {
     try {
       const data = await eventService.getEvents();
       setEvents(data);
-      // Simulate 1 second loading delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
       setIsLoading(false);
     } catch (error) {
       setToast({
@@ -60,8 +58,6 @@ export function useEventFeed() {
     try {
       const data = await eventService.getEvents();
       setEvents(data);
-      // Simulate 1 second loading delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
     } catch (error) {
       setToast({
         message: "Failed to refresh events. Please try again.",

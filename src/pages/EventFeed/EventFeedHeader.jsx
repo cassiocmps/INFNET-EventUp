@@ -1,5 +1,8 @@
+import { useNavigate } from "react-router-dom";
+import BackIcon from "../../assets/icons/BackIcon";
 import SecondaryButton from "../../components/SecondaryButton";
 import EventFeedFilters from "./EventFeedFilters";
+import { PATHS } from "../../routes/paths";
 import styles from "./EventFeedPage.module.css";
 
 export default function EventFeedHeader({
@@ -12,12 +15,23 @@ export default function EventFeedHeader({
   onCategoryChange,
   onClearFilters,
 }) {
+  const navigate = useNavigate();
+
   return (
     <div className={styles.headerWrapper}>
       <div className={styles.header}>
+        <div className={styles.backSection}>
+          <SecondaryButton
+            onClick={() => navigate(PATHS.dashboard)}
+            leftIcon={<BackIcon size={18} />}
+          >
+            Back
+          </SecondaryButton>
+        </div>
+
         <p className={styles.subtitle}>Discover amazing community events</p>
 
-        <div className={styles.refreshSection}>
+        <div className={styles.headerActions}>
           <SecondaryButton onClick={onRefresh} disabled={isRefreshing}>
             {isRefreshing ? "Refreshing..." : "Refresh"}
           </SecondaryButton>

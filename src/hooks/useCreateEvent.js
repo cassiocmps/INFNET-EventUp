@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
-import { eventService } from "../../services/eventService";
-import { PATHS } from "../../routes/paths";
+import { useAuth } from "../contexts/AuthContext";
+import { eventService } from "../services/eventService";
+import { PATHS } from "../routes/paths";
 
 const defaultForm = {
   title: "",

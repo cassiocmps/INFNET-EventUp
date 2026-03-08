@@ -1,4 +1,16 @@
 let usersStore = null;
+let rolesStore = null;
+const USERS_STORAGE_KEY = "mockUsers";
+const SIMULATED_LATENCY_MS = 1000;
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function persistUsers(users) {
+  usersStore = users;
+  localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
+}
 
 async function hashPassword(password) {
   const content = new TextEncoder().encode(password);
@@ -13,10 +25,22 @@ async function getUsers() {
     return usersStore;
   }
 
+  const storedUsers = localStorage.getItem(USERS_STORAGE_KEY);
+  if (storedUsers) {
+    try {
+      usersStore = JSON.parse(storedUsers);
+      return usersStore;
+    } catch (error) {
+      console.error("Error parsing stored users:", error);
+      localStorage.removeItem(USERS_STORAGE_KEY);
+    }
+  }
+
   try {
     const response = await fetch("/api/users.json");
     const data = await response.json();
     usersStore = data.users || [];
+    persistUsers(usersStore);
     return usersStore;
   } catch (error) {
     console.error("Error fetching users:", error);
@@ -28,6 +52,8 @@ async function signIn(email, password) {
   if (!email || !password) {
     throw new Error("Email and password are required");
   }
+
+  await sleep(SIMULATED_LATENCY_MS);
 
   try {
     const users = await getUsers();
@@ -54,6 +80,8 @@ async function signUp(profile) {
     throw new Error("All fields are required");
   }
 
+  await sleep(SIMULATED_LATENCY_MS);
+
   try {
     const signupResponse = await fetch("/api/signup.json");
     const signupData = await signupResponse.json();
@@ -69,10 +97,12 @@ async function signUp(profile) {
       email: profile.email.trim().toLowerCase(),
       role: profile.role,
       passwordHash,
+      favorites: [],
+      registrations: [],
     };
 
     const users = await getUsers();
-    usersStore = [...users, newUser];
+    persistUsers([...users, newUser]);
 
     return { success: true, user: newUser };
   } catch (error) {
@@ -80,7 +110,26 @@ async function signUp(profile) {
   }
 }
 
+async function getRoles() {
+  await sleep(SIMULATED_LATENCY_MS);
+
+  if (rolesStore !== null) {
+    return rolesStore;
+  }
+
+  try {
+    const response = await fetch("/api/roles.json");
+    const data = await response.json();
+    rolesStore = data.roles || [];
+    return rolesStore;
+  } catch (error) {
+    console.error("Error fetching roles:", error);
+    throw new Error("Failed to fetch roles");
+  }
+}
+
 export const authService = {
   signIn,
   signUp,
+  getRoles,
 };

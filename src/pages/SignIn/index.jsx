@@ -1,7 +1,7 @@
 import Toast from "../../components/Toast";
 import SignInBranding from "./SignInBranding";
 import SignInForm from "./SignInForm";
-import { useSignIn } from "./useSignIn";
+import { useSignIn } from "../../hooks/useSignIn";
 import styles from "./SignInPage.module.css";
 
 export default function SignInPage() {
