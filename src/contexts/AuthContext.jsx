@@ -24,6 +24,7 @@ export function AuthProvider({ children }) {
       name: user.name,
       email: user.email,
       role: user.role,
+      favorites: user.favorites || [],
     };
     setCurrentUser(userToStore);
     localStorage.setItem("currentUser", JSON.stringify(userToStore));
@@ -34,11 +35,38 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("currentUser");
   }
 
+  function toggleFavorite(eventId) {
+    if (!currentUser) return;
+
+    const currentFavorites = currentUser.favorites || [];
+    const isFavorited = currentFavorites.includes(eventId);
+
+    const updatedFavorites = isFavorited
+      ? currentFavorites.filter((id) => id !== eventId)
+      : [...currentFavorites, eventId];
+
+    const updatedUser = {
+      ...currentUser,
+      favorites: updatedFavorites,
+    };
+
+    setCurrentUser(updatedUser);
+    localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+  }
+
+  function isFavorite(eventId) {
+    if (!currentUser) return false;
+    return (currentUser.favorites || []).includes(eventId);
+  }
+
   const value = {
     currentUser,
     isLoading,
     login,
     logout,
+    toggleFavorite,
+    isFavorite,
+    favorites: currentUser?.favorites || [],
     isOrganizer: currentUser?.role === "organizer",
     isParticipant: currentUser?.role === "participant",
   };

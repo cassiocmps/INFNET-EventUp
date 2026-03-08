@@ -82,6 +82,31 @@
   font-size: 0.9375rem;
 }
 
+.favoriteCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.favoriteButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.favoriteButton:hover {
+  transform: scale(1.15);
+}
+
+.favoriteButton:active {
+  transform: scale(0.95);
+}
+
 .description {
   color: #4b5563;
   font-size: 0.9375rem;
@@ -158,6 +183,11 @@
 
   .dateValue {
     font-size: 0.875rem;
+  }
+
+  .favoriteCell {
+    flex: 0 0 48px;
+    min-width: 48px;
   }
 
   .expandedContent {
