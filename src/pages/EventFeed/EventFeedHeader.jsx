@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import BackIcon from "../../assets/icons/BackIcon";
+import { ChevronLeft, RefreshCw } from "lucide-react";
 import SecondaryButton from "../../components/SecondaryButton";
 import EventFeedFilters from "./EventFeedFilters";
 import { PATHS } from "../../routes/paths";
@@ -23,7 +23,7 @@ export default function EventFeedHeader({
         <div className={styles.backSection}>
           <SecondaryButton
             onClick={() => navigate(PATHS.dashboard)}
-            leftIcon={<BackIcon size={18} />}
+            leftIcon={<ChevronLeft size={18} />}
           >
             Back
           </SecondaryButton>
@@ -32,7 +32,11 @@ export default function EventFeedHeader({
         <p className={styles.subtitle}>Discover amazing community events</p>
 
         <div className={styles.headerActions}>
-          <SecondaryButton onClick={onRefresh} disabled={isRefreshing}>
+          <SecondaryButton
+            onClick={onRefresh}
+            disabled={isRefreshing}
+            leftIcon={<RefreshCw size={16} />}
+          >
             {isRefreshing ? "Refreshing..." : "Refresh"}
           </SecondaryButton>
         </div>

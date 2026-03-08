@@ -1,4 +1,4 @@
-import BackIcon from "../../assets/icons/BackIcon";
+import { ChevronLeft, UserPlus } from "lucide-react";
 import FormInput from "../../components/FormInput";
 import PrimaryButton from "../../components/PrimaryButton";
 import RoleSelector from "../../components/RoleSelector";
@@ -61,14 +61,18 @@ export default function SignUpForm({
         autoComplete="new-password"
       />
 
-      <PrimaryButton type="submit" disabled={!canSubmit}>
+      <PrimaryButton
+        type="submit"
+        disabled={!canSubmit}
+        leftIcon={<UserPlus size={18} />}
+      >
         {isSubmitting ? "Creating profile..." : "Create profile"}
       </PrimaryButton>
 
       <SecondaryButton
         type="button"
         onClick={handleCancel}
-        leftIcon={<BackIcon size={18} />}
+        leftIcon={<ChevronLeft size={18} />}
         fullWidth
       >
         Back

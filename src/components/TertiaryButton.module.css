@@ -9,7 +9,16 @@
   cursor: pointer;
   padding: 0.25rem 0;
   align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   transition: color 0.2s ease;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .button:hover {

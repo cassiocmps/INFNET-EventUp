@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { Plus, Compass, Star, CalendarCheck } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import Card from "../../components/Card";
 import PrimaryButton from "../../components/PrimaryButton";
@@ -35,7 +36,10 @@ export default function DashboardContent({
               Ready to create your next community event?
             </p>
             <div className={styles.actions}>
-              <PrimaryButton onClick={() => navigate(PATHS.createEvent)}>
+              <PrimaryButton
+                onClick={() => navigate(PATHS.createEvent)}
+                leftIcon={<Plus size={16} />}
+              >
                 Create new event
               </PrimaryButton>
             </div>
@@ -47,7 +51,10 @@ export default function DashboardContent({
               Discover and participate in amazing community events.
             </p>
             <div className={styles.actions}>
-              <PrimaryButton onClick={() => navigate(PATHS.eventFeed)}>
+              <PrimaryButton
+                onClick={() => navigate(PATHS.eventFeed)}
+                leftIcon={<Compass size={16} />}
+              >
                 Browse events
               </PrimaryButton>
             </div>
@@ -72,6 +79,7 @@ export default function DashboardContent({
                     </div>
                   ) : (
                     <div className={styles.emptyState}>
+                      <Star size={36} strokeWidth={1.5} />
                       <p className={styles.emptyText}>
                         You haven't favorited any events yet.
                       </p>
@@ -93,6 +101,7 @@ export default function DashboardContent({
                   </div>
                 ) : (
                   <div className={styles.emptyState}>
+                    <CalendarCheck size={36} strokeWidth={1.5} />
                     <p className={styles.emptyText}>
                       You haven't confirmed attendance for any events yet.
                     </p>

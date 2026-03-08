@@ -1,6 +1,14 @@
 import { useState } from "react";
+import {
+  Heart,
+  Calendar,
+  Clock,
+  MapPin,
+  User,
+  CheckCircle,
+} from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
-import FavoriteIcon from "../../assets/icons/FavoriteIcon";
+import { CategoryIcon } from "../../utils/categoryIcons";
 import PrimaryButton from "../../components/PrimaryButton";
 import TertiaryButton from "../../components/TertiaryButton";
 import { useRegistrationAction } from "../../hooks/useRegistrationAction";
@@ -59,7 +67,10 @@ export default function EventCard({ event, setToast }) {
       >
         <div className={styles.rowContent}>
           <div className={styles.categoryCell}>
-            <span className={styles.category}>{categoryLabel}</span>
+            <span className={styles.category}>
+              <CategoryIcon value={category} size={12} />
+              {categoryLabel}
+            </span>
           </div>
           <div className={styles.titleCell}>
             <h3 className={styles.title}>{title}</h3>
@@ -77,9 +88,9 @@ export default function EventCard({ event, setToast }) {
                   favorited ? "Remove from favorites" : "Add to favorites"
                 }
               >
-                <FavoriteIcon
-                  filled={favorited}
+                <Heart
                   size={20}
+                  fill={favorited ? "#ef4444" : "none"}
                   color={favorited ? "#ef4444" : "#9ca3af"}
                 />
               </button>
@@ -94,18 +105,22 @@ export default function EventCard({ event, setToast }) {
 
           <div className={styles.details}>
             <div className={styles.detailRow}>
+              <Calendar size={14} />
               <span className={styles.label}>Date:</span>
               <span className={styles.value}>{formattedDate}</span>
             </div>
             <div className={styles.detailRow}>
+              <Clock size={14} />
               <span className={styles.label}>Time:</span>
               <span className={styles.value}>{time}</span>
             </div>
             <div className={styles.detailRow}>
+              <MapPin size={14} />
               <span className={styles.label}>Location:</span>
               <span className={styles.value}>{location}</span>
             </div>
             <div className={styles.detailRow}>
+              <User size={14} />
               <span className={styles.label}>Organizer:</span>
               <span className={styles.value}>{organizerName}</span>
             </div>
@@ -136,7 +151,7 @@ export default function EventCard({ event, setToast }) {
               )}
               {registered && (
                 <p className={styles.registrationStatus}>
-                  ✓ You are registered for this event
+                  <CheckCircle size={14} /> You are registered for this event
                 </p>
               )}
             </div>

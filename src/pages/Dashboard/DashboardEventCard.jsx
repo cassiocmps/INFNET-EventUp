@@ -1,8 +1,9 @@
+import { Heart, Calendar, Clock, MapPin, User } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
+import { CategoryIcon } from "../../utils/categoryIcons";
 import PrimaryButton from "../../components/PrimaryButton";
 import SecondaryButton from "../../components/SecondaryButton";
 import TertiaryButton from "../../components/TertiaryButton";
-import FavoriteIcon from "../../assets/icons/FavoriteIcon";
 import { useRegistrationAction } from "../../hooks/useRegistrationAction";
 import styles from "./DashboardEventCard.module.css";
 
@@ -51,7 +52,10 @@ export default function DashboardEventCard({ event, type, setToast }) {
   return (
     <article className={styles.card}>
       <div className={styles.header}>
-        <span className={styles.category}>{categoryLabel}</span>
+        <span className={styles.category}>
+          <CategoryIcon value={category} size={12} />
+          {categoryLabel}
+        </span>
         {type === "favorite" && (
           <button
             type="button"
@@ -59,7 +63,7 @@ export default function DashboardEventCard({ event, type, setToast }) {
             onClick={handleRemoveFavorite}
             aria-label="Remove from favorites"
           >
-            <FavoriteIcon filled={true} size={20} color="#ef4444" />
+            <Heart size={20} fill="#ef4444" color="#ef4444" />
           </button>
         )}
       </div>
@@ -69,18 +73,22 @@ export default function DashboardEventCard({ event, type, setToast }) {
 
       <div className={styles.details}>
         <div className={styles.detailItem}>
+          <Calendar size={14} className={styles.detailIcon} />
           <span className={styles.detailLabel}>Date:</span>
           <span className={styles.detailValue}>{formattedDate}</span>
         </div>
         <div className={styles.detailItem}>
+          <Clock size={14} className={styles.detailIcon} />
           <span className={styles.detailLabel}>Time:</span>
           <span className={styles.detailValue}>{time}</span>
         </div>
         <div className={styles.detailItem}>
+          <MapPin size={14} className={styles.detailIcon} />
           <span className={styles.detailLabel}>Location:</span>
           <span className={styles.detailValue}>{location}</span>
         </div>
         <div className={styles.detailItem}>
+          <User size={14} className={styles.detailIcon} />
           <span className={styles.detailLabel}>Organizer:</span>
           <span className={styles.detailValue}>{organizerName}</span>
         </div>

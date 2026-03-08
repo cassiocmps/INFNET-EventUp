@@ -1,4 +1,4 @@
-import BackIcon from "../../assets/icons/BackIcon";
+import { ChevronLeft } from "lucide-react";
 import Card from "../../components/Card";
 import FormInput from "../../components/FormInput";
 import FormSelect from "../../components/FormSelect";
@@ -73,6 +73,7 @@ export default function CreateEventPage() {
             onChange={handleChange}
             error={errors.category}
             options={categories}
+            showCategoryIcons
           />
 
           <PrimaryButton type="submit" disabled={!canSubmit}>
@@ -82,7 +83,7 @@ export default function CreateEventPage() {
           <SecondaryButton
             type="button"
             onClick={handleCancel}
-            leftIcon={<BackIcon size={18} />}
+            leftIcon={<ChevronLeft size={18} />}
             fullWidth
           >
             Cancel

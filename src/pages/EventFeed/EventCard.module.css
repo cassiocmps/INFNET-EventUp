@@ -70,7 +70,9 @@
   font-size: 0.75rem;
   font-weight: 500;
   white-space: nowrap;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 .titleCell {
@@ -138,8 +140,10 @@
 
 .detailRow {
   display: flex;
+  align-items: center;
   gap: 0.5rem;
   font-size: 0.875rem;
+  color: #6b7280;
 }
 
 .label {

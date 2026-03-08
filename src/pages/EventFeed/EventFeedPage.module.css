@@ -54,11 +54,27 @@
 
 .loading {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 0.75rem;
   min-height: 50vh;
   font-size: 1.125rem;
   color: #6b7280;
+}
+
+.loadingSpinner {
+  animation: spin 1s linear infinite;
+  color: #6366f1;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .empty {
@@ -71,6 +87,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 0.75rem;
+  color: #9ca3af;
 }
 
 .emptyText {

@@ -1,3 +1,4 @@
+import { X } from "lucide-react";
 import FormInput from "../../components/FormInput";
 import FormSelect from "../../components/FormSelect";
 import SecondaryButton from "../../components/SecondaryButton";
@@ -31,10 +32,15 @@ export default function EventFeedFilters({
         onChange={(event) => onCategoryChange(event.target.value)}
         options={categories}
         placeholder="All categories"
+        showCategoryIcons
       />
 
       <div className={styles.clearFiltersButton}>
-        <SecondaryButton type="button" onClick={onClearFilters}>
+        <SecondaryButton
+          type="button"
+          onClick={onClearFilters}
+          leftIcon={<X size={14} />}
+        >
           Clear filters
         </SecondaryButton>
       </div>

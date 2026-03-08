@@ -1,3 +1,4 @@
+import { LogIn, UserPlus } from "lucide-react";
 import FormInput from "../../components/FormInput";
 import Logo from "../../components/Logo";
 import PrimaryButton from "../../components/PrimaryButton";
@@ -36,11 +37,19 @@ export default function SignInForm({
           autoComplete="current-password"
         />
 
-        <PrimaryButton type="submit" disabled={!canSubmit}>
+        <PrimaryButton
+          type="submit"
+          disabled={!canSubmit}
+          leftIcon={<LogIn size={18} />}
+        >
           {isSubmitting ? "Signing in..." : "Enter"}
         </PrimaryButton>
 
-        <TertiaryButton type="button" onClick={handleNavigateToSignUp}>
+        <TertiaryButton
+          type="button"
+          onClick={handleNavigateToSignUp}
+          leftIcon={<UserPlus size={16} />}
+        >
           New here? Join our amazing community
         </TertiaryButton>
       </form>
