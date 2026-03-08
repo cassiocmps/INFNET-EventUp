@@ -19,6 +19,7 @@ import styles from "./EventCard.module.css";
 export default function EventCard({ event, setToast }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [isFavoriteLoading, setIsFavoriteLoading] = useState(false);
   const {
     toggleFavorite,
     isFavorite,
@@ -57,9 +58,11 @@ export default function EventCard({ event, setToast }) {
     setToast,
   });
 
-  function handleFavoriteClick(e) {
+  async function handleFavoriteClick(e) {
     e.stopPropagation();
-    toggleFavorite(id);
+    setIsFavoriteLoading(true);
+    await toggleFavorite(id);
+    setIsFavoriteLoading(false);
   }
 
   function handleRegisterClick() {
@@ -109,14 +112,27 @@ export default function EventCard({ event, setToast }) {
                 type="button"
                 className={styles.favoriteButton}
                 onClick={handleFavoriteClick}
+                disabled={isFavoriteLoading}
                 aria-label={
                   favorited ? "Remove from favorites" : "Add to favorites"
                 }
               >
                 <Heart
                   size={20}
-                  fill={favorited ? "#ef4444" : "none"}
-                  color={favorited ? "#ef4444" : "#9ca3af"}
+                  fill={
+                    isFavoriteLoading
+                      ? "#6b7280"
+                      : favorited
+                        ? "#ef4444"
+                        : "none"
+                  }
+                  color={
+                    isFavoriteLoading
+                      ? "#6b7280"
+                      : favorited
+                        ? "#ef4444"
+                        : "#9ca3af"
+                  }
                 />
               </button>
             </div>

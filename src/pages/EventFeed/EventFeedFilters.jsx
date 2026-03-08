@@ -35,15 +35,17 @@ export default function EventFeedFilters({
         showCategoryIcons
       />
 
-      <div className={styles.clearFiltersButton}>
-        <SecondaryButton
-          type="button"
-          onClick={onClearFilters}
-          leftIcon={<X size={14} />}
-        >
-          Clear filters
-        </SecondaryButton>
-      </div>
+      {(searchTerm || selectedCategory) && (
+        <div className={styles.clearFiltersButton}>
+          <SecondaryButton
+            type="button"
+            onClick={onClearFilters}
+            leftIcon={<X size={14} />}
+          >
+            Clear filters
+          </SecondaryButton>
+        </div>
+      )}
     </div>
   );
 }

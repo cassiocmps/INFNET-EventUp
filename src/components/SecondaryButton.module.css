@@ -9,7 +9,7 @@
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  align-self: flex-start;
+  align-self: stretch;
   gap: 0.35rem;
   transition: border-color 0.2s ease;
 }
