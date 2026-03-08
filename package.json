@@ -8,10 +8,13 @@
     "lucide-react": "^0.577.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^7.13.1",
+    "react-router-dom": "^6.30.3",
     "react-scripts": "^5.0.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/react": "19.0.0",
     "@types/react-dom": "19.0.0",
     "loader-utils": "3.2.1",
@@ -28,5 +31,10 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "jest": {
+    "testMatch": [
+      "<rootDir>/src/**/*.test.{js,jsx,ts,tsx}"
+    ]
+  }
 }

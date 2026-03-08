@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { eventService } from "../services/eventService";
 
-const AuthContext = createContext(null);
+export const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
