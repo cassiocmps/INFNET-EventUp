@@ -1,10 +1,10 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
-import CreateEventPage from "../pages/CreateEventPage";
-import DashboardPage from "../pages/DashboardPage";
+import CreateEventPage from "../pages/CreateEvent";
+import DashboardPage from "../pages/Dashboard";
 import EventFeedPage from "../pages/EventFeed";
-import SignInPage from "../pages/SignInPage";
-import SignUpPage from "../pages/SignUpPage";
+import SignInPage from "../pages/SignIn";
+import SignUpPage from "../pages/SignUp";
 import { PATHS } from "./paths";
 
 export default function AppRouter() {

@@ -1,15 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import BackIcon from "../assets/icons/BackIcon";
-import Card from "../components/Card";
-import FormInput from "../components/FormInput";
-import PageHeader from "../components/PageHeader";
-import PrimaryButton from "../components/PrimaryButton";
-import RoleSelector from "../components/RoleSelector";
-import SecondaryButton from "../components/SecondaryButton";
-import { authService } from "../services/authService";
-import { PATHS } from "../routes/paths";
-import styles from "./SignUpPage.module.css";
+import { authService } from "../../services/authService";
+import { PATHS } from "../../routes/paths";
 
 const defaultForm = {
   name: "",
@@ -51,7 +43,7 @@ function validateForm({ name, email, password }) {
   return nextErrors;
 }
 
-export default function SignUpPage() {
+export function useSignUp() {
   const navigate = useNavigate();
   const [form, setForm] = useState(defaultForm);
   const [errors, setErrors] = useState({
@@ -125,70 +117,20 @@ export default function SignUpPage() {
     }
   }
 
-  return (
-    <Card withShadow>
-      <PageHeader
-        title="Create your profile"
-        subtitle="Join local events as an organizer or participant."
-        logoSize="medium"
-      />
+  function handleCancel() {
+    navigate(PATHS.signin);
+  }
 
-      <form className={styles.form} onSubmit={handleSubmit} noValidate>
-        <RoleSelector
-          roles={roles}
-          selectedRole={selectedRole}
-          onChange={setSelectedRole}
-        />
-
-        <FormInput
-          id="name"
-          name="name"
-          type="text"
-          label="Full name"
-          value={form.name}
-          placeholder="Type your full name"
-          onChange={handleChange}
-          error={errors.name}
-          autoComplete="name"
-        />
-
-        <FormInput
-          id="email"
-          name="email"
-          type="email"
-          label="Email"
-          value={form.email}
-          placeholder="name@email.com"
-          onChange={handleChange}
-          error={errors.email}
-          autoComplete="email"
-        />
-
-        <FormInput
-          id="password"
-          name="password"
-          type="password"
-          label="Password"
-          value={form.password}
-          placeholder="At least 8 chars, upper/lower and number"
-          onChange={handleChange}
-          error={errors.password}
-          autoComplete="new-password"
-        />
-
-        <PrimaryButton type="submit" disabled={!canSubmit}>
-          {isSubmitting ? "Creating profile..." : "Create profile"}
-        </PrimaryButton>
-
-        <SecondaryButton
-          type="button"
-          onClick={() => navigate(PATHS.signin)}
-          leftIcon={<BackIcon size={18} />}
-          fullWidth
-        >
-          Back
-        </SecondaryButton>
-      </form>
-    </Card>
-  );
+  return {
+    form,
+    errors,
+    roles,
+    selectedRole,
+    canSubmit,
+    isSubmitting,
+    handleChange,
+    handleSubmit,
+    handleCancel,
+    setSelectedRole,
+  };
 }
