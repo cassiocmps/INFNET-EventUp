@@ -12,14 +12,14 @@ async function getEvents() {
   await sleep(SIMULATED_LATENCY_MS);
 
   if (eventsStore !== null) {
-    return eventsStore;
+    return eventsStore.filter((event) => event.status !== "cancelled");
   }
 
   try {
     const response = await fetch("/api/events.json");
     const data = await response.json();
     eventsStore = data.events || [];
-    return eventsStore;
+    return eventsStore.filter((event) => event.status !== "cancelled");
   } catch (error) {
     console.error("Error fetching events:", error);
     throw new Error("Failed to fetch events");
@@ -94,10 +94,7 @@ async function getEventById(id) {
 
 async function getEventsByOrganizer(organizerId) {
   const events = await getEvents();
-  return events.filter(
-    (event) =>
-      event.organizerId === organizerId && event.status !== "cancelled",
-  );
+  return events.filter((event) => event.organizerId === organizerId);
 }
 
 async function updateEvent({
@@ -139,6 +136,7 @@ async function cancelEvent(eventId) {
     event.id === eventId ? { ...event, status: "cancelled" } : event,
   );
 
+  // Notifications TBD
   return { success: true };
 }
 
