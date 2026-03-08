@@ -15,8 +15,13 @@ async function getUsers() {
   const storedUsers = localStorage.getItem(USERS_STORAGE_KEY);
   if (storedUsers) {
     try {
-      usersStore = JSON.parse(storedUsers);
-      return usersStore;
+      const parsed = JSON.parse(storedUsers);
+      const isStale = parsed.some((u) => !u.id);
+      if (!isStale) {
+        usersStore = parsed;
+        return usersStore;
+      }
+      localStorage.removeItem(USERS_STORAGE_KEY);
     } catch (error) {
       console.error("Error parsing stored users:", error);
       localStorage.removeItem(USERS_STORAGE_KEY);

@@ -1,6 +1,7 @@
 {
   "users": [
     {
+      "id": "org-001",
       "name": "admin",
       "email": "admin",
       "role": "organizer",
@@ -9,6 +10,7 @@
       "registrations": []
     },
     {
+      "id": "part-001",
       "name": "user",
       "email": "user",
       "role": "participant",

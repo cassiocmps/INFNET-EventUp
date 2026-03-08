@@ -76,6 +76,48 @@ export default function CreateEventPage() {
             showCategoryIcons
           />
 
+          <FormInput
+            id="date"
+            name="date"
+            type="date"
+            label="Date"
+            value={form.date}
+            onChange={handleChange}
+            error={errors.date}
+          />
+
+          <FormInput
+            id="time"
+            name="time"
+            type="time"
+            label="Time"
+            value={form.time}
+            onChange={handleChange}
+            error={errors.time}
+          />
+
+          <FormInput
+            id="location"
+            name="location"
+            type="text"
+            label="Location"
+            value={form.location}
+            placeholder="Enter the event venue or address"
+            onChange={handleChange}
+            error={errors.location}
+          />
+
+          <FormInput
+            id="capacity"
+            name="capacity"
+            type="number"
+            label="Capacity"
+            value={form.capacity}
+            placeholder="Maximum number of participants"
+            onChange={handleChange}
+            error={errors.capacity}
+          />
+
           <PrimaryButton type="submit" disabled={!canSubmit}>
             {isSubmitting ? "Creating event..." : "Create event"}
           </PrimaryButton>

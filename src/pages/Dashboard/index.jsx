@@ -10,6 +10,8 @@ export default function DashboardPage() {
     setActiveTab,
     favoriteEvents,
     registeredEvents,
+    organizerEvents,
+    handleCancelEvent,
     isLoading,
   } = useDashboard();
 
@@ -28,6 +30,8 @@ export default function DashboardPage() {
         setActiveTab={setActiveTab}
         favoriteEvents={favoriteEvents}
         registeredEvents={registeredEvents}
+        organizerEvents={organizerEvents}
+        onCancelEvent={handleCancelEvent}
         isLoading={isLoading}
       />
     </>

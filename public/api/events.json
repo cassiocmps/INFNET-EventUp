@@ -35,8 +35,8 @@
       "title": "Tech Startup Meetup",
       "description": "Network with fellow entrepreneurs and tech enthusiasts. Share ideas, find collaborators, and learn about the latest trends.",
       "category": "meetup",
-      "organizerId": "org-003",
-      "organizerName": "Tech Valley Hub",
+      "organizerId": "org-001",
+      "organizerName": "Green Hands Association",
       "date": "2026-03-18",
       "time": "6:00 PM",
       "location": "Innovation Center, Room 301",
@@ -65,8 +65,8 @@
       "title": "Digital Marketing Seminar",
       "description": "Master the essentials of digital marketing. Topics include SEO, social media strategies, and content marketing.",
       "category": "seminar",
-      "organizerId": "org-005",
-      "organizerName": "Business Growth Institute",
+      "organizerId": "org-001",
+      "organizerName": "Green Hands Association",
       "date": "2026-03-25",
       "time": "2:00 PM",
       "location": "Convention Center, Hall B",
@@ -119,6 +119,21 @@
       "enrolled": 178,
       "status": "active",
       "createdAt": "2026-02-16T08:00:00.000Z"
+    },
+    {
+      "id": "9",
+      "title": "Urban Photography Walk",
+      "description": "Explore the city through your lens. Suitable for all skill levels — bring your camera or smartphone!",
+      "category": "workshop",
+      "organizerId": "org-001",
+      "organizerName": "Green Hands Association",
+      "date": "2026-04-10",
+      "time": "3:00 PM",
+      "location": "City Arts District",
+      "capacity": 20,
+      "enrolled": 7,
+      "status": "active",
+      "createdAt": "2026-03-01T09:00:00.000Z"
     }
   ]
 }

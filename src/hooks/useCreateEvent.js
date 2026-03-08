@@ -8,13 +8,29 @@ const defaultForm = {
   title: "",
   description: "",
   category: "",
+  date: "",
+  time: "",
+  location: "",
+  capacity: "",
 };
 
-function validateForm({ title, description, category }) {
+function validateForm({
+  title,
+  description,
+  category,
+  date,
+  time,
+  location,
+  capacity,
+}) {
   const nextErrors = {
     title: "",
     description: "",
     category: "",
+    date: "",
+    time: "",
+    location: "",
+    capacity: "",
   };
 
   if (!title.trim()) {
@@ -33,6 +49,24 @@ function validateForm({ title, description, category }) {
     nextErrors.category = "Category is required.";
   }
 
+  if (!date) {
+    nextErrors.date = "Date is required.";
+  }
+
+  if (!time) {
+    nextErrors.time = "Time is required.";
+  }
+
+  if (!location.trim()) {
+    nextErrors.location = "Location is required.";
+  }
+
+  if (!capacity) {
+    nextErrors.capacity = "Capacity is required.";
+  } else if (Number(capacity) < 1) {
+    nextErrors.capacity = "Capacity must be at least 1.";
+  }
+
   return nextErrors;
 }
 
@@ -44,6 +78,10 @@ export function useCreateEvent() {
     title: "",
     description: "",
     category: "",
+    date: "",
+    time: "",
+    location: "",
+    capacity: "",
   });
   const [categories, setCategories] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -87,7 +125,15 @@ export function useCreateEvent() {
 
   const canSubmit = useMemo(() => {
     return (
-      Boolean(form.title && form.description && form.category) && !isSubmitting
+      Boolean(
+        form.title &&
+        form.description &&
+        form.category &&
+        form.date &&
+        form.time &&
+        form.location &&
+        form.capacity,
+      ) && !isSubmitting
     );
   }, [form, isSubmitting]);
 
@@ -124,6 +170,12 @@ export function useCreateEvent() {
         title: form.title,
         description: form.description,
         category: form.category,
+        date: form.date,
+        time: form.time,
+        location: form.location,
+        capacity: Number(form.capacity),
+        organizerId: currentUser?.id,
+        organizerName: currentUser?.name,
       });
 
       navigate(PATHS.dashboard, {

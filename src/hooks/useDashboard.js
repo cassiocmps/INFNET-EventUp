@@ -5,11 +5,13 @@ import { eventService } from "../services/eventService";
 
 export function useDashboard() {
   const location = useLocation();
-  const { isParticipant, favorites, registrations } = useAuth();
+  const { currentUser, isParticipant, isOrganizer, favorites, registrations } =
+    useAuth();
   const [toast, setToast] = useState(null);
   const [activeTab, setActiveTab] = useState("favorites");
   const [favoriteEvents, setFavoriteEvents] = useState([]);
   const [registeredEvents, setRegisteredEvents] = useState([]);
+  const [organizerEvents, setOrganizerEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -33,7 +35,7 @@ export function useDashboard() {
   useEffect(() => {
     if (!isParticipant) return;
 
-    async function loadEvents() {
+    async function loadParticipantEvents() {
       setIsLoading(true);
       try {
         const allEvents = await eventService.getEvents();
@@ -44,7 +46,7 @@ export function useDashboard() {
         setRegisteredEvents(
           allEvents.filter((event) => registrations.includes(event.id)),
         );
-      } catch (error) {
+      } catch {
         setToast({
           message: "Failed to load events. Please try again.",
           type: "error",
@@ -54,8 +56,42 @@ export function useDashboard() {
       }
     }
 
-    loadEvents();
+    loadParticipantEvents();
   }, [isParticipant, favorites, registrations]);
+
+  useEffect(() => {
+    if (!isOrganizer || !currentUser) return;
+
+    async function loadOrganizerEvents() {
+      setIsLoading(true);
+      try {
+        const events = await eventService.getEventsByOrganizer(currentUser.id);
+        setOrganizerEvents(events);
+      } catch {
+        setToast({
+          message: "Failed to load your events. Please try again.",
+          type: "error",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadOrganizerEvents();
+  }, [isOrganizer, currentUser, location.key]);
+
+  async function handleCancelEvent(eventId) {
+    try {
+      await eventService.cancelEvent(eventId);
+      setOrganizerEvents((prev) => prev.filter((e) => e.id !== eventId));
+      setToast({ message: "Event cancelled successfully.", type: "success" });
+    } catch {
+      setToast({
+        message: "Failed to cancel the event. Please try again.",
+        type: "error",
+      });
+    }
+  }
 
   return {
     toast,
@@ -64,6 +100,8 @@ export function useDashboard() {
     setActiveTab,
     favoriteEvents,
     registeredEvents,
+    organizerEvents,
+    handleCancelEvent,
     isLoading,
   };
 }

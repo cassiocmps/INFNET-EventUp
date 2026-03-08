@@ -11,7 +11,12 @@ export function AuthProvider({ children }) {
     const storedUser = localStorage.getItem("currentUser");
     if (storedUser) {
       try {
-        setCurrentUser(JSON.parse(storedUser));
+        const parsed = JSON.parse(storedUser);
+        if (!parsed.id) {
+          localStorage.removeItem("currentUser");
+        } else {
+          setCurrentUser(parsed);
+        }
       } catch (error) {
         console.error("Error parsing stored user:", error);
         localStorage.removeItem("currentUser");
@@ -22,6 +27,7 @@ export function AuthProvider({ children }) {
 
   function login(user) {
     const userToStore = {
+      id: user.id,
       name: user.name,
       email: user.email,
       role: user.role,

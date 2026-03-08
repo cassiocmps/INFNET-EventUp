@@ -5,9 +5,9 @@ import PrimaryButton from "../../components/PrimaryButton";
 import SecondaryButton from "../../components/SecondaryButton";
 import TertiaryButton from "../../components/TertiaryButton";
 import { useRegistrationAction } from "../../hooks/useRegistrationAction";
-import styles from "./DashboardEventCard.module.css";
+import styles from "./ParticipantEventCard.module.css";
 
-export default function DashboardEventCard({ event, type, setToast }) {
+export default function ParticipantEventCard({ event, type, setToast }) {
   const {
     toggleFavorite,
     unregisterFromEvent,
