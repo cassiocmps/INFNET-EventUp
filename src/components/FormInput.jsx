@@ -10,6 +10,7 @@ export default function FormInput({
   onChange,
   error,
   autoComplete,
+  disabled,
 }) {
   return (
     <div className={styles.field}>
@@ -27,6 +28,7 @@ export default function FormInput({
         placeholder={placeholder}
         onChange={onChange}
         autoComplete={autoComplete}
+        disabled={disabled}
         aria-invalid={Boolean(error)}
         aria-describedby={error ? `${id}-error` : undefined}
       />

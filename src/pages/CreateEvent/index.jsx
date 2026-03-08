@@ -124,6 +124,18 @@ export default function CreateEventPage() {
               error={errors.capacity}
             />
 
+            <FormInput
+              id="price"
+              name="price"
+              type="number"
+              label="Price ($)"
+              value={form.price}
+              placeholder="0 for free events"
+              onChange={handleChange}
+              error={errors.price}
+              disabled={isEditMode}
+            />
+
             <PrimaryButton type="submit" disabled={!canSubmit}>
               {isSubmitting
                 ? isEditMode

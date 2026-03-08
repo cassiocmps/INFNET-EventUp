@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CheckCircle, XCircle, AlertCircle, X } from "lucide-react";
+import { CheckCircle, XCircle, AlertCircle } from "lucide-react";
 import styles from "./Toast.module.css";
 
 const ICONS = {
@@ -39,13 +39,6 @@ export default function Toast({
     >
       <span className={styles.icon}>{ICONS[type]}</span>
       <span className={styles.message}>{message}</span>
-      <button
-        className={styles.closeButton}
-        onClick={onClose}
-        aria-label="Dismiss"
-      >
-        <X size={16} />
-      </button>
     </div>
   );
 }

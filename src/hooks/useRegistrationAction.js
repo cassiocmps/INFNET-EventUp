@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export function useRegistrationAction({
   eventId,
   isRegistered,
@@ -8,6 +10,7 @@ export function useRegistrationAction({
   setToast,
 }) {
   const [isLoading, setIsLoading] = useState(false);
+  const [isPaymentLoading, setIsPaymentLoading] = useState(false);
 
   async function toggleRegistration() {
     if (isLoading) return;
@@ -59,9 +62,32 @@ export function useRegistrationAction({
     }
   }
 
+  async function payAndRegister() {
+    if (isPaymentLoading) return;
+
+    try {
+      setIsPaymentLoading(true);
+      await sleep(3000);
+      await registerForEvent(eventId);
+      setToast?.({
+        message: "Payment successful! You are now registered.",
+        type: "success",
+      });
+    } catch {
+      setToast?.({
+        message: "Payment failed. Please try again.",
+        type: "error",
+      });
+    } finally {
+      setIsPaymentLoading(false);
+    }
+  }
+
   return {
     isLoading,
+    isPaymentLoading,
     toggleRegistration,
     cancelRegistration,
+    payAndRegister,
   };
 }

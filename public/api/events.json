@@ -12,6 +12,7 @@
       "location": "Central Park Community Center",
       "capacity": 30,
       "enrolled": 18,
+      "price": 0,
       "status": "active",
       "createdAt": "2026-02-20T10:00:00.000Z"
     },
@@ -27,6 +28,7 @@
       "location": "Main Street Plaza",
       "capacity": 200,
       "enrolled": 87,
+      "price": 10,
       "status": "active",
       "createdAt": "2026-02-18T14:30:00.000Z"
     },
@@ -42,6 +44,7 @@
       "location": "Innovation Center, Room 301",
       "capacity": 50,
       "enrolled": 42,
+      "price": 15,
       "status": "active",
       "createdAt": "2026-02-15T09:00:00.000Z"
     },
@@ -57,6 +60,7 @@
       "location": "Riverside Park Entrance",
       "capacity": 100,
       "enrolled": 56,
+      "price": 0,
       "status": "active",
       "createdAt": "2026-02-22T11:00:00.000Z"
     },
@@ -72,6 +76,7 @@
       "location": "Convention Center, Hall B",
       "capacity": 80,
       "enrolled": 65,
+      "price": 25,
       "status": "active",
       "createdAt": "2026-02-19T16:00:00.000Z"
     },
@@ -87,6 +92,7 @@
       "location": "Municipal Sports Complex",
       "capacity": 120,
       "enrolled": 98,
+      "price": 0,
       "status": "active",
       "createdAt": "2026-02-21T13:00:00.000Z"
     },
@@ -102,6 +108,7 @@
       "location": "Heritage Square",
       "capacity": 500,
       "enrolled": 234,
+      "price": 0,
       "status": "active",
       "createdAt": "2026-02-17T10:30:00.000Z"
     },
@@ -117,6 +124,7 @@
       "location": "Lakeside Trail Start Point",
       "capacity": 300,
       "enrolled": 178,
+      "price": 20,
       "status": "active",
       "createdAt": "2026-02-16T08:00:00.000Z"
     },
@@ -132,6 +140,7 @@
       "location": "City Arts District",
       "capacity": 20,
       "enrolled": 7,
+      "price": 0,
       "status": "active",
       "createdAt": "2026-03-01T09:00:00.000Z"
     }

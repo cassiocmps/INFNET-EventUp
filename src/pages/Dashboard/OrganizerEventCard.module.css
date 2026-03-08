@@ -51,11 +51,24 @@
   line-height: 1.35;
 }
 
+.revenue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.875rem;
+  color: #475569;
+}
+
+.revenue strong {
+  color: #16a34a;
+  font-weight: 600;
+}
+
 .actions {
   display: flex;
   flex-direction: column;
   gap: 0.625rem;
-  margin-top: 0.25rem;
+  margin-top: auto;
 }
 
 .actions > * {

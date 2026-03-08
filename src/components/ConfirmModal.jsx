@@ -1,4 +1,3 @@
-import { AlertTriangle } from "lucide-react";
 import PrimaryButton from "./PrimaryButton";
 import SecondaryButton from "./SecondaryButton";
 import styles from "./ConfirmModal.module.css";
@@ -7,18 +6,16 @@ export default function ConfirmModal({
   title,
   message,
   confirmLabel = "Confirm",
-  cancelLabel = "Cancel",
+  cancelLabel = "Back",
   onConfirm,
   onCancel,
   isLoading = false,
-  variant = "danger",
+  icon,
 }) {
   return (
     <div className={styles.overlay} role="dialog" aria-modal="true">
       <div className={styles.modal}>
-        <div className={`${styles.iconWrap} ${styles[variant]}`}>
-          <AlertTriangle size={28} />
-        </div>
+        {icon && <div className={styles.iconWrap}>{icon}</div>}
 
         <h2 className={styles.title}>{title}</h2>
         <p className={styles.message}>{message}</p>

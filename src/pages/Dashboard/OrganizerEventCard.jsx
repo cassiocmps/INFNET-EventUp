@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, generatePath } from "react-router-dom";
-import { Users, Pencil } from "lucide-react";
+import { Users, Pencil, AlertTriangle, DollarSign } from "lucide-react";
 import { CategoryIcon } from "../../utils/categoryIcons";
 import ConfirmModal from "../../components/ConfirmModal";
 import SecondaryButton from "../../components/SecondaryButton";
@@ -12,7 +12,8 @@ export default function OrganizerEventCard({ event, onCancel }) {
   const navigate = useNavigate();
   const [isCancelling, setIsCancelling] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const { id, title, category, enrolled = 0 } = event;
+  const { id, title, category, enrolled = 0, price = 0 } = event;
+  const revenue = price * enrolled;
 
   const categoryLabel = category.charAt(0).toUpperCase() + category.slice(1);
 
@@ -37,6 +38,7 @@ export default function OrganizerEventCard({ event, onCancel }) {
           title="Cancel event?"
           message={`"${title}" will be permanently cancelled and participants will no longer be able to register.`}
           confirmLabel="Yes, cancel event"
+          icon={<AlertTriangle size={28} color="#dc2626" />}
           onConfirm={handleConfirmCancel}
           onCancel={() => setShowConfirm(false)}
           isLoading={isCancelling}
@@ -56,6 +58,14 @@ export default function OrganizerEventCard({ event, onCancel }) {
         </div>
 
         <h3 className={styles.title}>{title}</h3>
+
+        {price > 0 && (
+          <div className={styles.revenue}>
+            <DollarSign size={14} />
+            <span>Total revenue:</span>
+            <strong>${revenue.toFixed(2)}</strong>
+          </div>
+        )}
 
         <div className={styles.actions}>
           <SecondaryButton

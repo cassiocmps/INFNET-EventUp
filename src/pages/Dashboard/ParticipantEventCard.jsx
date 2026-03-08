@@ -1,13 +1,15 @@
-import { Heart, Calendar, Clock, MapPin, User } from "lucide-react";
+import { useState } from "react";
+import { Heart, Calendar, Clock, MapPin, User, CreditCard } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { CategoryIcon } from "../../utils/categoryIcons";
 import PrimaryButton from "../../components/PrimaryButton";
 import SecondaryButton from "../../components/SecondaryButton";
-import TertiaryButton from "../../components/TertiaryButton";
+import ConfirmModal from "../../components/ConfirmModal";
 import { useRegistrationAction } from "../../hooks/useRegistrationAction";
 import styles from "./ParticipantEventCard.module.css";
 
 export default function ParticipantEventCard({ event, type, setToast }) {
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const {
     toggleFavorite,
     unregisterFromEvent,
@@ -23,19 +25,26 @@ export default function ParticipantEventCard({ event, type, setToast }) {
     time,
     location,
     organizerName,
+    price,
   } = event;
 
+  const isPaid = price > 0;
   const categoryLabel = category.charAt(0).toUpperCase() + category.slice(1);
   const formattedDate = new Date(date).toLocaleDateString();
   const registered = isRegistered(id);
-  const { isLoading, toggleRegistration, cancelRegistration } =
-    useRegistrationAction({
-      eventId: id,
-      isRegistered: registered,
-      registerForEvent,
-      unregisterFromEvent,
-      setToast,
-    });
+  const {
+    isLoading,
+    isPaymentLoading,
+    toggleRegistration,
+    cancelRegistration,
+    payAndRegister,
+  } = useRegistrationAction({
+    eventId: id,
+    isRegistered: registered,
+    registerForEvent,
+    unregisterFromEvent,
+    setToast,
+  });
 
   function handleRemoveFavorite() {
     toggleFavorite(id);
@@ -49,8 +58,24 @@ export default function ParticipantEventCard({ event, type, setToast }) {
     toggleRegistration();
   }
 
+  async function handleConfirmPayment() {
+    await payAndRegister();
+    setShowPaymentModal(false);
+  }
+
   return (
     <article className={styles.card}>
+      {showPaymentModal && (
+        <ConfirmModal
+          icon={<CreditCard size={28} color="#16a34a" />}
+          title="Complete Payment"
+          message={`Register for "${title}" for $${price}.`}
+          confirmLabel={`Pay $${price}`}
+          onConfirm={handleConfirmPayment}
+          onCancel={() => setShowPaymentModal(false)}
+          isLoading={isPaymentLoading}
+        />
+      )}
       <div className={styles.header}>
         <span className={styles.category}>
           <CategoryIcon value={category} size={12} />
@@ -103,18 +128,25 @@ export default function ParticipantEventCard({ event, type, setToast }) {
             >
               {isLoading ? "Cancelling..." : "Cancel Registration"}
             </SecondaryButton>
+          ) : isPaid ? (
+            <PrimaryButton
+              onClick={() => setShowPaymentModal(true)}
+              disabled={isPaymentLoading}
+            >
+              {`Pay $${price}`}
+            </PrimaryButton>
           ) : (
             <PrimaryButton onClick={handleRegisterToggle} disabled={isLoading}>
               {isLoading ? "Confirming..." : "Confirm Attendance"}
             </PrimaryButton>
           )
         ) : (
-          <TertiaryButton
+          <SecondaryButton
             onClick={handleCancelRegistration}
             disabled={isLoading}
           >
             {isLoading ? "Cancelling..." : "Cancel Registration"}
-          </TertiaryButton>
+          </SecondaryButton>
         )}
       </div>
     </article>

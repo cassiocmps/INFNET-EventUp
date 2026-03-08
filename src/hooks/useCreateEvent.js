@@ -12,6 +12,7 @@ const defaultForm = {
   time: "",
   location: "",
   capacity: "",
+  price: "0",
 };
 
 function validateForm({
@@ -22,6 +23,7 @@ function validateForm({
   time,
   location,
   capacity,
+  price,
 }) {
   const nextErrors = {
     title: "",
@@ -31,6 +33,7 @@ function validateForm({
     time: "",
     location: "",
     capacity: "",
+    price: "",
   };
 
   if (!title.trim()) {
@@ -67,6 +70,12 @@ function validateForm({
     nextErrors.capacity = "Capacity must be at least 1.";
   }
 
+  if (price === "" || price === null || price === undefined) {
+    nextErrors.price = "Price is required (use 0 for free events).";
+  } else if (Number(price) < 0) {
+    nextErrors.price = "Price cannot be negative.";
+  }
+
   return nextErrors;
 }
 
@@ -84,6 +93,7 @@ export function useCreateEvent() {
     time: "",
     location: "",
     capacity: "",
+    price: "",
   });
   const [categories, setCategories] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -147,6 +157,7 @@ export function useCreateEvent() {
           time: event.time || "",
           location: event.location || "",
           capacity: event.capacity != null ? String(event.capacity) : "",
+          price: event.price != null ? String(event.price) : "0",
         });
       } catch {
         setToast({
@@ -170,7 +181,8 @@ export function useCreateEvent() {
         form.date &&
         form.time &&
         form.location &&
-        form.capacity,
+        form.capacity &&
+        form.price !== "",
       ) && !isSubmitting
     );
   }, [form, isSubmitting]);
@@ -214,6 +226,7 @@ export function useCreateEvent() {
           time: form.time,
           location: form.location,
           capacity: Number(form.capacity),
+          price: Number(form.price),
         });
         navigate(PATHS.dashboard, {
           state: { successMessage: "Event updated successfully!" },
@@ -227,6 +240,7 @@ export function useCreateEvent() {
           time: form.time,
           location: form.location,
           capacity: Number(form.capacity),
+          price: Number(form.price),
           organizerId: currentUser?.id,
           organizerName: currentUser?.name,
         });

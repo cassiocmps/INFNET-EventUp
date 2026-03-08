@@ -52,6 +52,7 @@ async function createEvent({
   time,
   location,
   capacity,
+  price,
   organizerId,
   organizerName,
 }) {
@@ -71,6 +72,7 @@ async function createEvent({
       time,
       location,
       capacity,
+      price: price ?? 0,
       organizerId: organizerId || "current-user",
       organizerName: organizerName || "",
       enrolled: 0,
@@ -106,6 +108,7 @@ async function updateEvent({
   time,
   location,
   capacity,
+  price,
 }) {
   await sleep(SIMULATED_LATENCY_MS);
 
@@ -121,6 +124,7 @@ async function updateEvent({
           time,
           location,
           capacity,
+          price: price ?? event.price ?? 0,
         }
       : event,
   );
