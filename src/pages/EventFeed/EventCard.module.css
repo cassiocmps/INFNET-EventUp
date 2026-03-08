@@ -5,6 +5,11 @@
   overflow: hidden;
 }
 
+.card.registered {
+  background: #ecfdf5;
+  border-left: 4px solid #059669;
+}
+
 .rowButton {
   width: 100%;
   background: none;
@@ -24,6 +29,14 @@
 
 .rowButton:hover .rowContent {
   background-color: #f9fafb;
+}
+
+.card.registered .rowContent {
+  background-color: #ecfdf5;
+}
+
+.card.registered .rowButton:hover .rowContent {
+  background-color: #d1fae5;
 }
 
 .expandedContent {
@@ -138,6 +151,26 @@
 .value {
   color: #1f2937;
   flex: 1;
+}
+
+.registrationSection {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.registrationStatus {
+  margin: 0;
+  color: #059669;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 @media (min-width: 768px) {

@@ -25,6 +25,7 @@ export function AuthProvider({ children }) {
       email: user.email,
       role: user.role,
       favorites: user.favorites || [],
+      registrations: user.registrations || [],
     };
     setCurrentUser(userToStore);
     localStorage.setItem("currentUser", JSON.stringify(userToStore));
@@ -59,6 +60,49 @@ export function AuthProvider({ children }) {
     return (currentUser.favorites || []).includes(eventId);
   }
 
+  function registerForEvent(eventId) {
+    if (!currentUser) return;
+
+    const currentRegistrations = currentUser.registrations || [];
+    const isAlreadyRegistered = currentRegistrations.includes(eventId);
+
+    if (isAlreadyRegistered) {
+      return;
+    }
+
+    const updatedRegistrations = [...currentRegistrations, eventId];
+
+    const updatedUser = {
+      ...currentUser,
+      registrations: updatedRegistrations,
+    };
+
+    setCurrentUser(updatedUser);
+    localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+  }
+
+  function unregisterFromEvent(eventId) {
+    if (!currentUser) return;
+
+    const currentRegistrations = currentUser.registrations || [];
+    const updatedRegistrations = currentRegistrations.filter(
+      (id) => id !== eventId,
+    );
+
+    const updatedUser = {
+      ...currentUser,
+      registrations: updatedRegistrations,
+    };
+
+    setCurrentUser(updatedUser);
+    localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+  }
+
+  function isRegistered(eventId) {
+    if (!currentUser) return false;
+    return (currentUser.registrations || []).includes(eventId);
+  }
+
   const value = {
     currentUser,
     isLoading,
@@ -66,7 +110,11 @@ export function AuthProvider({ children }) {
     logout,
     toggleFavorite,
     isFavorite,
+    registerForEvent,
+    unregisterFromEvent,
+    isRegistered,
     favorites: currentUser?.favorites || [],
+    registrations: currentUser?.registrations || [],
     isOrganizer: currentUser?.role === "organizer",
     isParticipant: currentUser?.role === "participant",
   };

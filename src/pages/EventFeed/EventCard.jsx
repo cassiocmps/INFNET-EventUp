@@ -1,11 +1,20 @@
 import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import FavoriteIcon from "../../assets/icons/FavoriteIcon";
+import PrimaryButton from "../../components/PrimaryButton";
+import TertiaryButton from "../../components/TertiaryButton";
 import styles from "./EventCard.module.css";
 
 export default function EventCard({ event }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const { toggleFavorite, isFavorite, isParticipant } = useAuth();
+  const {
+    toggleFavorite,
+    isFavorite,
+    isParticipant,
+    registerForEvent,
+    unregisterFromEvent,
+    isRegistered,
+  } = useAuth();
   const {
     id,
     title,
@@ -20,14 +29,25 @@ export default function EventCard({ event }) {
   const categoryLabel = category.charAt(0).toUpperCase() + category.slice(1);
   const formattedDate = new Date(date).toLocaleDateString();
   const favorited = isFavorite(id);
+  const registered = isRegistered(id);
 
   function handleFavoriteClick(e) {
     e.stopPropagation();
     toggleFavorite(id);
   }
 
+  function handleRegisterClick() {
+    if (registered) {
+      unregisterFromEvent(id);
+    } else {
+      registerForEvent(id);
+    }
+  }
+
   return (
-    <article className={`${styles.card} ${isExpanded ? styles.expanded : ""}`}>
+    <article
+      className={`${styles.card} ${isExpanded ? styles.expanded : ""} ${registered ? styles.registered : ""}`}
+    >
       <button
         className={styles.rowButton}
         onClick={() => setIsExpanded(!isExpanded)}
@@ -85,6 +105,25 @@ export default function EventCard({ event }) {
               <span className={styles.value}>{organizerName}</span>
             </div>
           </div>
+
+          {isParticipant && (
+            <div className={styles.registrationSection}>
+              {registered ? (
+                <TertiaryButton type="button" onClick={handleRegisterClick}>
+                  Cancel Registration
+                </TertiaryButton>
+              ) : (
+                <PrimaryButton type="button" onClick={handleRegisterClick}>
+                  Confirm Attendance
+                </PrimaryButton>
+              )}
+              {registered && (
+                <p className={styles.registrationStatus}>
+                  ✓ You are registered for this event
+                </p>
+              )}
+            </div>
+          )}
         </div>
       )}
     </article>
