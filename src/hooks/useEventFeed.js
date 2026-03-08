@@ -35,7 +35,10 @@ export function useEventFeed() {
       const data = await eventService.getCategories();
       setCategories(data);
     } catch (error) {
-      console.error("Error loading categories:", error);
+      setToast({
+        message: "Failed to load categories. Please try again.",
+        type: "error",
+      });
     }
   }
 

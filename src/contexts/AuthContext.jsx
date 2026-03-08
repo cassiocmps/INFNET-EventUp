@@ -45,15 +45,11 @@ export function AuthProvider({ children }) {
   async function toggleFavorite(eventId) {
     if (!currentUser) return;
 
-    try {
-      const updatedUser = await eventService.toggleFavoriteForUser({
-        user: currentUser,
-        eventId,
-      });
-      syncCurrentUser(updatedUser);
-    } catch (error) {
-      console.error("Error toggling favorite:", error);
-    }
+    const updatedUser = await eventService.toggleFavoriteForUser({
+      user: currentUser,
+      eventId,
+    });
+    syncCurrentUser(updatedUser);
   }
 
   function isFavorite(eventId) {
@@ -64,29 +60,21 @@ export function AuthProvider({ children }) {
   async function registerForEvent(eventId) {
     if (!currentUser) return;
 
-    try {
-      const updatedUser = await eventService.registerForEventForUser({
-        user: currentUser,
-        eventId,
-      });
-      syncCurrentUser(updatedUser);
-    } catch (error) {
-      console.error("Error registering for event:", error);
-    }
+    const updatedUser = await eventService.registerForEventForUser({
+      user: currentUser,
+      eventId,
+    });
+    syncCurrentUser(updatedUser);
   }
 
   async function unregisterFromEvent(eventId) {
     if (!currentUser) return;
 
-    try {
-      const updatedUser = await eventService.unregisterFromEventForUser({
-        user: currentUser,
-        eventId,
-      });
-      syncCurrentUser(updatedUser);
-    } catch (error) {
-      console.error("Error unregistering from event:", error);
-    }
+    const updatedUser = await eventService.unregisterFromEventForUser({
+      user: currentUser,
+      eventId,
+    });
+    syncCurrentUser(updatedUser);
   }
 
   function isRegistered(eventId) {
