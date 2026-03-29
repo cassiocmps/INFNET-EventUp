@@ -1,13 +1,14 @@
 import { useEffect, useRef } from "react";
 import { XCircle, AlertCircle, BellOff } from "lucide-react";
+import type { Notification, NotificationType } from "types";
 import styles from "./NotificationPanel.module.css";
 
-const TYPE_ICON = {
+const TYPE_ICON: Record<NotificationType, React.ReactElement> = {
   cancellation: <XCircle size={16} color="#ef4444" aria-hidden="true" />,
   update: <AlertCircle size={16} color="#f59e0b" aria-hidden="true" />,
 };
 
-function formatRelativeTime(isoString) {
+function formatRelativeTime(isoString: string): string {
   const diff = Date.now() - new Date(isoString).getTime();
   const minutes = Math.floor(diff / 60_000);
   if (minutes < 1) return "Just now";
@@ -18,12 +19,17 @@ function formatRelativeTime(isoString) {
   return `${days}d ago`;
 }
 
-export default function NotificationPanel({ notifications, onClose }) {
-  const panelRef = useRef(null);
+interface NotificationPanelProps {
+  notifications: Notification[];
+  onClose: () => void;
+}
+
+export default function NotificationPanel({ notifications, onClose }: NotificationPanelProps): React.ReactElement {
+  const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    function handleOutsideClick(e) {
-      if (panelRef.current && !panelRef.current.contains(e.target)) {
+    function handleOutsideClick(e: MouseEvent) {
+      if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
         onClose();
       }
     }

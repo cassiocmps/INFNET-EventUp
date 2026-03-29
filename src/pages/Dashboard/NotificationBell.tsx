@@ -1,7 +1,12 @@
 import { Bell } from "lucide-react";
 import styles from "./NotificationBell.module.css";
 
-export default function NotificationBell({ unreadCount, onClick }) {
+interface NotificationBellProps {
+  unreadCount: number;
+  onClick: () => void;
+}
+
+export default function NotificationBell({ unreadCount, onClick }: NotificationBellProps): React.ReactElement {
   return (
     <button
       type="button"

@@ -8,6 +8,7 @@ import {
   Loader2,
   LogOut,
 } from "lucide-react";
+import type { Event, ToastState } from "types";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNotifications } from "../../hooks/useNotifications";
 import Card from "../../components/Card";
@@ -21,6 +22,17 @@ import OrganizerEventCard from "./OrganizerEventCard";
 import { PATHS } from "../../routes/paths";
 import styles from "./DashboardPage.module.css";
 
+interface DashboardContentProps {
+  setToast: (t: ToastState | null) => void;
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
+  favoriteEvents: Event[];
+  registeredEvents: Event[];
+  organizerEvents: Event[];
+  onCancelEvent: (id: string) => Promise<void>;
+  isLoading: boolean;
+}
+
 export default function DashboardContent({
   setToast,
   activeTab,
@@ -30,7 +42,7 @@ export default function DashboardContent({
   organizerEvents,
   onCancelEvent,
   isLoading,
-}) {
+}: DashboardContentProps): React.ReactElement {
   const navigate = useNavigate();
   const { currentUser, isOrganizer, isParticipant, logout } = useAuth();
   const { notifications, unreadCount, isPanelOpen, togglePanel, closePanel } =

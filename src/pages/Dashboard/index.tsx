@@ -2,7 +2,7 @@ import Toast from "../../components/Toast";
 import DashboardContent from "./DashboardContent";
 import { useDashboard } from "../../hooks/useDashboard";
 
-export default function DashboardPage() {
+export default function DashboardPage(): React.ReactElement {
   const {
     toast,
     setToast,

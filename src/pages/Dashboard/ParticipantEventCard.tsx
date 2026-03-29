@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Heart, Calendar, Clock, MapPin, User, CreditCard } from "lucide-react";
+import type { Event, ToastState } from "types";
 import { useAuth } from "../../contexts/AuthContext";
 import { CategoryIcon } from "../../utils/categoryIcons";
 import PrimaryButton from "../../components/PrimaryButton";
@@ -8,7 +9,13 @@ import ConfirmModal from "../../components/ConfirmModal";
 import { useRegistrationAction } from "../../hooks/useRegistrationAction";
 import styles from "./ParticipantEventCard.module.css";
 
-export default function ParticipantEventCard({ event, type, setToast }) {
+interface ParticipantEventCardProps {
+  event: Event;
+  type: "favorite" | "registered";
+  setToast: (t: ToastState | null) => void;
+}
+
+export default function ParticipantEventCard({ event, type, setToast }: ParticipantEventCardProps): React.ReactElement {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const {
     toggleFavorite,

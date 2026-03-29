@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, generatePath } from "react-router-dom";
 import { Users, Pencil, AlertTriangle, DollarSign } from "lucide-react";
+import type { Event } from "types";
 import { CategoryIcon } from "../../utils/categoryIcons";
 import ConfirmModal from "../../components/ConfirmModal";
 import SecondaryButton from "../../components/SecondaryButton";
@@ -8,7 +9,12 @@ import TertiaryButton from "../../components/TertiaryButton";
 import { PATHS } from "../../routes/paths";
 import styles from "./OrganizerEventCard.module.css";
 
-export default function OrganizerEventCard({ event, onCancel }) {
+interface OrganizerEventCardProps {
+  event: Event;
+  onCancel: (id: string) => Promise<void>;
+}
+
+export default function OrganizerEventCard({ event, onCancel }: OrganizerEventCardProps): React.ReactElement {
   const navigate = useNavigate();
   const [isCancelling, setIsCancelling] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
