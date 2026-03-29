@@ -5,4 +5,4 @@ export const PATHS = {
   createEvent: "/create-event",
   editEvent: "/edit-event/:eventId",
   eventFeed: "/events",
-};
+} as const;
