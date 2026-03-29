@@ -1,6 +1,16 @@
 import { useState } from "react";
+import type { ToastState } from "types";
 
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const sleep = (ms: number): Promise<void> =>
+  new Promise((resolve) => setTimeout(resolve, ms));
+
+interface UseRegistrationActionInput {
+  eventId: string;
+  isRegistered: boolean;
+  registerForEvent: (eventId: string) => Promise<void>;
+  unregisterFromEvent: (eventId: string) => Promise<void>;
+  setToast: (toast: ToastState | null) => void;
+}
 
 export function useRegistrationAction({
   eventId,
@@ -8,7 +18,7 @@ export function useRegistrationAction({
   registerForEvent,
   unregisterFromEvent,
   setToast,
-}) {
+}: UseRegistrationActionInput) {
   const [isLoading, setIsLoading] = useState(false);
   const [isPaymentLoading, setIsPaymentLoading] = useState(false);
 

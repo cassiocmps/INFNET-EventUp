@@ -1,15 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import type { Role, SignUpFormData, SignUpFormErrors, ToastState } from "types";
 import { authService } from "../services/authService";
 import { PATHS } from "../routes/paths";
 
-const defaultForm = {
+const defaultForm: SignUpFormData = {
   name: "",
   email: "",
   password: "",
 };
 
-function validateForm({ name, email, password }) {
+function validateForm({ name, email, password }: SignUpFormData): SignUpFormErrors {
   const nextErrors = {
     name: "",
     email: "",
@@ -45,16 +46,16 @@ function validateForm({ name, email, password }) {
 
 export function useSignUp() {
   const navigate = useNavigate();
-  const [form, setForm] = useState(defaultForm);
-  const [errors, setErrors] = useState({
+  const [form, setForm] = useState<SignUpFormData>(defaultForm);
+  const [errors, setErrors] = useState<SignUpFormErrors>({
     name: "",
     email: "",
     password: "",
   });
-  const [roles, setRoles] = useState([]);
+  const [roles, setRoles] = useState<Role[]>([]);
   const [selectedRole, setSelectedRole] = useState("participant");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [toast, setToast] = useState(null);
+  const [toast, setToast] = useState<ToastState | null>(null);
 
   useEffect(() => {
     async function loadRoles() {
@@ -76,14 +77,14 @@ export function useSignUp() {
     return Boolean(form.name && form.email && form.password) && !isSubmitting;
   }, [form, isSubmitting]);
 
-  function handleChange(event) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
     const { name, value } = event.target;
     setForm((currentForm) => ({
       ...currentForm,
       [name]: value,
     }));
 
-    if (errors[name]) {
+    if (errors[name as keyof SignUpFormData]) {
       setErrors((currentErrors) => ({
         ...currentErrors,
         [name]: "",
@@ -91,14 +92,13 @@ export function useSignUp() {
     }
   }
 
-  async function handleSubmit(event) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
+    const validationErrors = validateForm(form);
+    const hasErrors = Object.values(validationErrors).some(Boolean);
 
-    const nextErrors = validateForm(form);
-    setErrors(nextErrors);
-
-    const hasErrors = Object.values(nextErrors).some((error) => Boolean(error));
     if (hasErrors) {
+      setErrors(validationErrors);
       return;
     }
 
@@ -119,7 +119,7 @@ export function useSignUp() {
       });
     } catch (error) {
       setToast({
-        message: error.message || "Sign up failed. Please try again.",
+        message: (error as Error).message || "Sign up failed. Please try again.",
         type: "error",
       });
     } finally {

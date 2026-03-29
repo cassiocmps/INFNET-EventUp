@@ -1,10 +1,15 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import type { AuthContextValue, User } from "types";
 import { eventService } from "../services/eventService";
 
-export const AuthContext = createContext(null);
+export const AuthContext = createContext<AuthContextValue | null>(null);
 
-export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState(null);
+interface AuthProviderProps {
+  children: React.ReactNode;
+}
+
+export function AuthProvider({ children }: AuthProviderProps) {
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -25,17 +30,9 @@ export function AuthProvider({ children }) {
     setIsLoading(false);
   }, []);
 
-  function login(user) {
-    const userToStore = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      favorites: user.favorites || [],
-      registrations: user.registrations || [],
-    };
-    setCurrentUser(userToStore);
-    localStorage.setItem("currentUser", JSON.stringify(userToStore));
+  function login(user: User): void {
+    setCurrentUser(user);
+    localStorage.setItem("currentUser", JSON.stringify(user));
   }
 
   function logout() {
@@ -43,12 +40,12 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("currentUser");
   }
 
-  function syncCurrentUser(updatedUser) {
+  function syncCurrentUser(updatedUser: User): void {
     setCurrentUser(updatedUser);
     localStorage.setItem("currentUser", JSON.stringify(updatedUser));
   }
 
-  async function toggleFavorite(eventId) {
+  async function toggleFavorite(eventId: string): Promise<void> {
     if (!currentUser) return;
 
     const updatedUser = await eventService.toggleFavoriteForUser({
@@ -58,12 +55,12 @@ export function AuthProvider({ children }) {
     syncCurrentUser(updatedUser);
   }
 
-  function isFavorite(eventId) {
+  function isFavorite(eventId: string): boolean {
     if (!currentUser) return false;
     return (currentUser.favorites || []).includes(eventId);
   }
 
-  async function registerForEvent(eventId) {
+  async function registerForEvent(eventId: string): Promise<void> {
     if (!currentUser) return;
 
     const updatedUser = await eventService.registerForEventForUser({
@@ -73,7 +70,7 @@ export function AuthProvider({ children }) {
     syncCurrentUser(updatedUser);
   }
 
-  async function unregisterFromEvent(eventId) {
+  async function unregisterFromEvent(eventId: string): Promise<void> {
     if (!currentUser) return;
 
     const updatedUser = await eventService.unregisterFromEventForUser({
@@ -83,12 +80,12 @@ export function AuthProvider({ children }) {
     syncCurrentUser(updatedUser);
   }
 
-  function isRegistered(eventId) {
+  function isRegistered(eventId: string): boolean {
     if (!currentUser) return false;
     return (currentUser.registrations || []).includes(eventId);
   }
 
-  const value = {
+  const value: AuthContextValue = {
     currentUser,
     isLoading,
     login,
@@ -107,7 +104,7 @@ export function AuthProvider({ children }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-export function useAuth() {
+export function useAuth(): AuthContextValue {
   const context = useContext(AuthContext);
   if (!context) {
     throw new Error("useAuth must be used within AuthProvider");

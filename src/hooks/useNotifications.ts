@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
+import type { Notification } from "types";
 import { useAuth } from "../contexts/AuthContext";
 import { notificationService } from "../services/notificationService";
 
 export function useNotifications() {
   const { currentUser } = useAuth();
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
 
   useEffect(() => {

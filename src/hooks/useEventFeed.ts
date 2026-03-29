@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import type { Category, Event, ToastState } from "types";
 import { useAuth } from "../contexts/AuthContext";
 import { PATHS } from "../routes/paths";
 import { eventService } from "../services/eventService";
@@ -10,15 +11,15 @@ const MAX_PULL_DISTANCE = 120;
 export function useEventFeed() {
   const navigate = useNavigate();
   const { isParticipant } = useAuth();
-  const [events, setEvents] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [pullDistance, setPullDistance] = useState(0);
-  const [toast, setToast] = useState(null);
-  const touchStartYRef = useRef(null);
+  const [toast, setToast] = useState<ToastState | null>(null);
+  const touchStartYRef = useRef<number | null>(null);
   const pullDistanceRef = useRef(0);
 
   useEffect(() => {
@@ -75,7 +76,7 @@ export function useEventFeed() {
     return window.innerWidth < 768;
   }
 
-  function handleTouchStart(event) {
+  function handleTouchStart(event: React.TouchEvent): void {
     if (!isMobileViewport() || isRefreshing || window.scrollY > 0) {
       return;
     }
@@ -83,7 +84,7 @@ export function useEventFeed() {
     touchStartYRef.current = event.touches[0].clientY;
   }
 
-  function handleTouchMove(event) {
+  function handleTouchMove(event: React.TouchEvent): void {
     if (touchStartYRef.current === null || !isMobileViewport()) {
       return;
     }

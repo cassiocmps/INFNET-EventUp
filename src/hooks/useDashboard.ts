@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import type { Event, ToastState } from "types";
 import { useAuth } from "../contexts/AuthContext";
 import { eventService } from "../services/eventService";
 
@@ -7,11 +8,11 @@ export function useDashboard() {
   const location = useLocation();
   const { currentUser, isParticipant, isOrganizer, favorites, registrations } =
     useAuth();
-  const [toast, setToast] = useState(null);
+  const [toast, setToast] = useState<ToastState | null>(null);
   const [activeTab, setActiveTab] = useState("favorites");
-  const [favoriteEvents, setFavoriteEvents] = useState([]);
-  const [registeredEvents, setRegisteredEvents] = useState([]);
-  const [organizerEvents, setOrganizerEvents] = useState([]);
+  const [favoriteEvents, setFavoriteEvents] = useState<Event[]>([]);
+  const [registeredEvents, setRegisteredEvents] = useState<Event[]>([]);
+  const [organizerEvents, setOrganizerEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -63,9 +64,10 @@ export function useDashboard() {
     if (!isOrganizer || !currentUser) return;
 
     async function loadOrganizerEvents() {
+      const userId = currentUser!.id;
       setIsLoading(true);
       try {
-        const events = await eventService.getEventsByOrganizer(currentUser.id);
+        const events = await eventService.getEventsByOrganizer(userId);
         setOrganizerEvents(events);
       } catch {
         setToast({
@@ -80,7 +82,7 @@ export function useDashboard() {
     loadOrganizerEvents();
   }, [isOrganizer, currentUser, location.key]);
 
-  async function handleCancelEvent(eventId) {
+  async function handleCancelEvent(eventId: string): Promise<void> {
     try {
       await eventService.cancelEvent(eventId);
       setOrganizerEvents((prev) => prev.filter((e) => e.id !== eventId));

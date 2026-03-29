@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import type { Category, EventFormData, EventFormErrors, ToastState } from "types";
 import { useAuth } from "../contexts/AuthContext";
 import { eventService } from "../services/eventService";
 import { PATHS } from "../routes/paths";
 
-const defaultForm = {
+const defaultForm: EventFormData = {
   title: "",
   description: "",
   category: "",
@@ -24,7 +25,7 @@ function validateForm({
   location,
   capacity,
   price,
-}) {
+}: EventFormData): EventFormErrors {
   const nextErrors = {
     title: "",
     description: "",
@@ -84,8 +85,8 @@ export function useCreateEvent() {
   const { eventId } = useParams();
   const isEditMode = Boolean(eventId);
   const { currentUser, isOrganizer } = useAuth();
-  const [form, setForm] = useState(defaultForm);
-  const [errors, setErrors] = useState({
+  const [form, setForm] = useState<EventFormData>(defaultForm);
+  const [errors, setErrors] = useState<EventFormErrors>({
     title: "",
     description: "",
     category: "",
@@ -95,10 +96,10 @@ export function useCreateEvent() {
     capacity: "",
     price: "",
   });
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoadingEvent, setIsLoadingEvent] = useState(isEditMode);
-  const [toast, setToast] = useState(null);
+  const [toast, setToast] = useState<ToastState | null>(null);
 
   useEffect(() => {
     if (!currentUser) {
@@ -140,6 +141,7 @@ export function useCreateEvent() {
     if (!isEditMode) return;
 
     async function loadEvent() {
+      if (!eventId) return;
       setIsLoadingEvent(true);
       try {
         const event = await eventService.getEventById(eventId);
@@ -187,14 +189,14 @@ export function useCreateEvent() {
     );
   }, [form, isSubmitting]);
 
-  function handleChange(event) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void {
     const { name, value } = event.target;
     setForm((currentForm) => ({
       ...currentForm,
       [name]: value,
     }));
 
-    if (errors[name]) {
+    if (errors[name as keyof EventFormErrors]) {
       setErrors((currentErrors) => ({
         ...currentErrors,
         [name]: "",
@@ -202,14 +204,12 @@ export function useCreateEvent() {
     }
   }
 
-  async function handleSubmit(event) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
 
-    const nextErrors = validateForm(form);
-    setErrors(nextErrors);
-
-    const hasErrors = Object.values(nextErrors).some((error) => Boolean(error));
-    if (hasErrors) {
+    const validationErrors = validateForm(form);
+    if (Object.values(validationErrors).some(Boolean)) {
+      setErrors(validationErrors);
       return;
     }
 
@@ -218,7 +218,7 @@ export function useCreateEvent() {
     try {
       if (isEditMode) {
         await eventService.updateEvent({
-          id: eventId,
+          id: eventId!,
           title: form.title,
           description: form.description,
           category: form.category,
@@ -250,7 +250,7 @@ export function useCreateEvent() {
       }
     } catch (error) {
       setToast({
-        message: error.message || "Failed to create event. Please try again.",
+        message: (error as Error).message || "Failed to create event. Please try again.",
         type: "error",
       });
     } finally {

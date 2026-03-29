@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import type { SignInFormData, ToastState } from "types";
 import { useAuth } from "../contexts/AuthContext";
 import { authService } from "../services/authService";
 import { PATHS } from "../routes/paths";
 
-const initialForm = {
+const initialForm: SignInFormData = {
   email: "",
   password: "",
 };
@@ -13,8 +14,8 @@ export function useSignIn() {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useAuth();
-  const [form, setForm] = useState(initialForm);
-  const [toast, setToast] = useState(null);
+  const [form, setForm] = useState<SignInFormData>(initialForm);
+  const [toast, setToast] = useState<ToastState | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -32,7 +33,7 @@ export function useSignIn() {
     return Boolean(form.email && form.password) && !isSubmitting;
   }, [form, isSubmitting]);
 
-  function handleChange(event) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
     const { name, value } = event.target;
 
     setForm((currentForm) => ({
@@ -41,10 +42,9 @@ export function useSignIn() {
     }));
   }
 
-  async function handleSubmit(event) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
-
-    if (!form.email || !form.password) {
+    if (!canSubmit) {
       return;
     }
 
@@ -56,7 +56,7 @@ export function useSignIn() {
       navigate(PATHS.dashboard);
     } catch (error) {
       setToast({
-        message: error.message || "An error occurred. Please try again.",
+        message: (error as Error).message || "An error occurred. Please try again.",
         type: "error",
       });
     } finally {
