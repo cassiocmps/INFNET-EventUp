@@ -1,5 +1,18 @@
 import styles from "./FormInput.module.css";
 
+interface FormInputProps {
+  id: string;
+  name: string;
+  label: string;
+  type?: React.HTMLInputTypeAttribute;
+  value: string;
+  placeholder?: string;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  error?: string;
+  autoComplete?: string;
+  disabled?: boolean;
+}
+
 export default function FormInput({
   id,
   name,
@@ -11,7 +24,7 @@ export default function FormInput({
   error,
   autoComplete,
   disabled,
-}) {
+}: FormInputProps) {
   return (
     <div className={styles.field}>
       <label className={styles.label} htmlFor={id}>

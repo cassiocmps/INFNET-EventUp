@@ -1,6 +1,13 @@
+import type { Role } from "types";
 import styles from "./RoleSelector.module.css";
 
-export default function RoleSelector({ roles, selectedRole, onChange }) {
+interface RoleSelectorProps {
+  roles: Role[];
+  selectedRole: string;
+  onChange: (roleId: string) => void;
+}
+
+export default function RoleSelector({ roles, selectedRole, onChange }: RoleSelectorProps) {
   return (
     <div className={styles.wrapper}>
       <span className={styles.label}>Profile type</span>

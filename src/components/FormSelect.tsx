@@ -1,5 +1,18 @@
 import { CategoryIcon } from "../utils/categoryIcons";
+import type { Category, EventCategory } from "types";
 import styles from "./FormSelect.module.css";
+
+interface FormSelectProps {
+  id: string;
+  name: string;
+  label: string;
+  value: string;
+  onChange: React.ChangeEventHandler<HTMLSelectElement>;
+  error?: string;
+  options: Category[];
+  placeholder?: string;
+  showCategoryIcons?: boolean;
+}
 
 export default function FormSelect({
   id,
@@ -11,7 +24,7 @@ export default function FormSelect({
   options,
   placeholder,
   showCategoryIcons = false,
-}) {
+}: FormSelectProps) {
   const hasIcon = showCategoryIcons && value;
 
   return (
@@ -22,7 +35,7 @@ export default function FormSelect({
       <div className={styles.selectWrapper}>
         {hasIcon && (
           <span className={styles.selectIcon} aria-hidden="true">
-            <CategoryIcon value={value} size={16} />
+            <CategoryIcon value={value as EventCategory} size={16} />
           </span>
         )}
         <select

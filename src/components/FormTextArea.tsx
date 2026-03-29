@@ -1,5 +1,16 @@
 import styles from "./FormTextArea.module.css";
 
+interface FormTextAreaProps {
+  id: string;
+  name: string;
+  label: string;
+  value: string;
+  placeholder?: string;
+  onChange: React.ChangeEventHandler<HTMLTextAreaElement>;
+  error?: string;
+  rows?: number;
+}
+
 export default function FormTextArea({
   id,
   name,
@@ -9,7 +20,7 @@ export default function FormTextArea({
   onChange,
   error,
   rows = 5,
-}) {
+}: FormTextAreaProps) {
   return (
     <div className={styles.field}>
       <label className={styles.label} htmlFor={id}>

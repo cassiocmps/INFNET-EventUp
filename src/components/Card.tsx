@@ -1,6 +1,11 @@
 import styles from "./Card.module.css";
 
-export default function Card({ children, withShadow = false }) {
+interface CardProps {
+  children: React.ReactNode;
+  withShadow?: boolean;
+}
+
+export default function Card({ children, withShadow = false }: CardProps) {
   return (
     <section
       className={

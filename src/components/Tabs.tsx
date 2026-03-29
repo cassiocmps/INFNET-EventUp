@@ -1,6 +1,17 @@
 import styles from "./Tabs.module.css";
 
-export default function Tabs({ tabs, activeTab, onChange }) {
+interface Tab {
+  key: string;
+  label: string;
+}
+
+interface TabsProps {
+  tabs: Tab[];
+  activeTab: string;
+  onChange: (key: string) => void;
+}
+
+export default function Tabs({ tabs, activeTab, onChange }: TabsProps) {
   return (
     <div className={styles.tabs}>
       {tabs.map((tab) => (

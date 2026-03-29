@@ -2,6 +2,17 @@ import PrimaryButton from "./PrimaryButton";
 import SecondaryButton from "./SecondaryButton";
 import styles from "./ConfirmModal.module.css";
 
+interface ConfirmModalProps {
+  title: string;
+  message: string;
+  confirmLabel?: string;
+  cancelLabel?: string;
+  onConfirm: () => void;
+  onCancel: () => void;
+  isLoading?: boolean;
+  icon?: React.ReactNode;
+}
+
 export default function ConfirmModal({
   title,
   message,
@@ -11,7 +22,7 @@ export default function ConfirmModal({
   onCancel,
   isLoading = false,
   icon,
-}) {
+}: ConfirmModalProps) {
   return (
     <div className={styles.overlay} role="dialog" aria-modal="true">
       <div className={styles.modal}>
