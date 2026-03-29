@@ -1,7 +1,7 @@
 import { CalendarX } from "lucide-react";
 import styles from "./EventFeedPage.module.css";
 
-export default function EmptyState() {
+export default function EmptyState(): React.ReactElement {
   return (
     <div className={styles.empty}>
       <CalendarX size={40} strokeWidth={1.5} className={styles.emptyIcon} />

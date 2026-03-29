@@ -7,7 +7,7 @@ import EmptyState from "./EmptyState";
 import { useEventFeed } from "../../hooks/useEventFeed";
 import styles from "./EventFeedPage.module.css";
 
-export default function EventFeedPage() {
+export default function EventFeedPage(): React.ReactElement {
   const {
     filteredEvents,
     categories,

@@ -1,8 +1,18 @@
 import { X } from "lucide-react";
+import type { Category } from "types";
 import FormInput from "../../components/FormInput";
 import FormSelect from "../../components/FormSelect";
 import SecondaryButton from "../../components/SecondaryButton";
 import styles from "./EventFeedPage.module.css";
+
+interface EventFeedFiltersProps {
+  categories: Category[];
+  searchTerm: string;
+  selectedCategory: string;
+  onSearchChange: (term: string) => void;
+  onCategoryChange: (cat: string) => void;
+  onClearFilters: () => void;
+}
 
 export default function EventFeedFilters({
   categories,
@@ -11,7 +21,7 @@ export default function EventFeedFilters({
   onSearchChange,
   onCategoryChange,
   onClearFilters,
-}) {
+}: EventFeedFiltersProps): React.ReactElement {
   return (
     <div className={styles.filtersRow}>
       <FormInput

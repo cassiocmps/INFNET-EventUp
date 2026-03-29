@@ -8,6 +8,7 @@ import {
   CheckCircle,
   CreditCard,
 } from "lucide-react";
+import type { Event, ToastState } from "types";
 import { useAuth } from "../../contexts/AuthContext";
 import { CategoryIcon } from "../../utils/categoryIcons";
 import PrimaryButton from "../../components/PrimaryButton";
@@ -16,7 +17,12 @@ import ConfirmModal from "../../components/ConfirmModal";
 import { useRegistrationAction } from "../../hooks/useRegistrationAction";
 import styles from "./EventCard.module.css";
 
-export default function EventCard({ event, setToast }) {
+interface EventCardProps {
+  event: Event;
+  setToast: (t: ToastState | null) => void;
+}
+
+export default function EventCard({ event, setToast }: EventCardProps): React.ReactElement {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [isFavoriteLoading, setIsFavoriteLoading] = useState(false);
@@ -58,7 +64,7 @@ export default function EventCard({ event, setToast }) {
     setToast,
   });
 
-  async function handleFavoriteClick(e) {
+  async function handleFavoriteClick(e: React.MouseEvent): Promise<void> {
     e.stopPropagation();
     setIsFavoriteLoading(true);
     await toggleFavorite(id);
