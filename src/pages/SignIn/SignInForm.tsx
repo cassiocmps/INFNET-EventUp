@@ -1,9 +1,19 @@
 import { LogIn, UserPlus } from "lucide-react";
+import type { SignInFormData } from "types";
 import FormInput from "../../components/FormInput";
 import Logo from "../../components/Logo";
 import PrimaryButton from "../../components/PrimaryButton";
 import TertiaryButton from "../../components/TertiaryButton";
 import styles from "./SignInPage.module.css";
+
+interface SignInFormProps {
+  form: SignInFormData;
+  canSubmit: boolean;
+  isSubmitting: boolean;
+  handleChange: React.ChangeEventHandler<HTMLInputElement>;
+  handleSubmit: React.FormEventHandler<HTMLFormElement>;
+  handleNavigateToSignUp: () => void;
+}
 
 export default function SignInForm({
   form,
@@ -12,7 +22,7 @@ export default function SignInForm({
   handleChange,
   handleSubmit,
   handleNavigateToSignUp,
-}) {
+}: SignInFormProps): React.ReactElement {
   return (
     <div className={styles.formPanel}>
       <form className={styles.form} onSubmit={handleSubmit}>

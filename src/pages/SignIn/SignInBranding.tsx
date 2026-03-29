@@ -1,7 +1,7 @@
 import { CalendarDays, Users, MapPin } from "lucide-react";
 import styles from "./SignInPage.module.css";
 
-export default function SignInBranding() {
+export default function SignInBranding(): React.ReactElement {
   return (
     <div className={styles.branding}>
       <div className={styles.brandContent}>

@@ -4,7 +4,7 @@ import SignInForm from "./SignInForm";
 import { useSignIn } from "../../hooks/useSignIn";
 import styles from "./SignInPage.module.css";
 
-export default function SignInPage() {
+export default function SignInPage(): React.ReactElement {
   const {
     form,
     toast,
