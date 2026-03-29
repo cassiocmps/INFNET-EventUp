@@ -1,13 +1,12 @@
-import { screen, waitFor } from "@testing-library/react";
+import { fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import type { Category, Event } from "../../types";
 import { eventService } from "../../services/eventService";
-import {
-  mockCategories,
-  mockOrganizer,
-  renderPage,
-} from "./createEventPage.helper";
+import { mockCategories, mockOrganizer, renderPage } from "./createEventPage.helper";
+
 
 jest.mock("../../services/eventService");
+const mockedEventService = eventService as jest.Mocked<typeof eventService>;
 
 const mockNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
@@ -17,13 +16,12 @@ jest.mock("react-router-dom", () => ({
 
 beforeEach(() => {
   jest.clearAllMocks();
-  eventService.getCategories.mockResolvedValue(mockCategories);
-  eventService.getEventById.mockResolvedValue(null);
-  eventService.createEvent.mockResolvedValue({ id: "new-event" });
-  eventService.updateEvent.mockResolvedValue({});
+  mockedEventService.getCategories.mockResolvedValue(mockCategories as unknown as Category[]);
+  mockedEventService.getEventById.mockResolvedValue(null);
+  mockedEventService.createEvent.mockResolvedValue({ success: true, event: {} as any });
 });
 
-describe("CreateEventPage – create mode", () => {
+describe("CreateEventPage - create mode", () => {
   test("renders the page title", async () => {
     renderPage();
     expect(await screen.findByText("Create new event")).toBeInTheDocument();
@@ -59,7 +57,7 @@ describe("CreateEventPage – create mode", () => {
   });
 });
 
-describe("CreateEventPage – validation", () => {
+describe("CreateEventPage - validation", () => {
   test("shows validation errors when submitting an empty form", async () => {
     const user = userEvent.setup();
     renderPage();
@@ -102,12 +100,10 @@ describe("CreateEventPage – validation", () => {
     await user.type(screen.getByLabelText("Location"), "Main Hall");
     await user.type(screen.getByLabelText("Capacity"), "50");
 
-    const { fireEvent } = require("@testing-library/react");
     fireEvent.change(screen.getByLabelText("Category"), {
       target: { value: "" },
     });
-    // eslint-disable-next-line testing-library/no-node-access
-    fireEvent.submit(document.querySelector("form"));
+    fireEvent.submit(document.querySelector("form")!);
 
     expect(
       await screen.findByText("Category is required."),
@@ -115,7 +111,7 @@ describe("CreateEventPage – validation", () => {
   });
 });
 
-describe("CreateEventPage – submission", () => {
+describe("CreateEventPage - submission", () => {
   test("calls createEvent and navigates to dashboard on success", async () => {
     const user = userEvent.setup();
     renderPage();
@@ -135,7 +131,7 @@ describe("CreateEventPage – submission", () => {
     await user.click(submitBtn);
 
     await waitFor(() => {
-      expect(eventService.createEvent).toHaveBeenCalledWith(
+      expect(mockedEventService.createEvent).toHaveBeenCalledWith(
         expect.objectContaining({
           title: "My Great Event",
           description: "A valid description here",
@@ -162,7 +158,7 @@ describe("CreateEventPage – submission", () => {
   });
 
   test("shows error toast when createEvent fails", async () => {
-    eventService.createEvent.mockRejectedValue(new Error("Server error"));
+    mockedEventService.createEvent.mockRejectedValue(new Error("Server error"));
     const user = userEvent.setup();
     renderPage();
     await screen.findByText("Create new event");
@@ -185,7 +181,7 @@ describe("CreateEventPage – submission", () => {
   });
 });
 
-describe("CreateEventPage – auth guard", () => {
+describe("CreateEventPage - auth guard", () => {
   test("redirects to sign-in when there is no logged-in user", async () => {
     renderPage({ user: null, isOrganizer: false });
 
@@ -216,7 +212,7 @@ describe("CreateEventPage – auth guard", () => {
   });
 });
 
-describe("CreateEventPage – cancel", () => {
+describe("CreateEventPage - cancel", () => {
   test("navigates to dashboard when cancel is clicked", async () => {
     const user = userEvent.setup();
     renderPage();
@@ -227,7 +223,7 @@ describe("CreateEventPage – cancel", () => {
   });
 });
 
-describe("CreateEventPage – edit mode", () => {
+describe("CreateEventPage - edit mode", () => {
   const existingEvent = {
     id: "e1",
     title: "Existing Event",
@@ -242,8 +238,12 @@ describe("CreateEventPage – edit mode", () => {
     organizerName: "Alice Organizer",
   };
 
+  beforeEach(() => {
+    mockedEventService.getEventById.mockResolvedValue(existingEvent as unknown as Event);
+    mockedEventService.updateEvent.mockResolvedValue({ success: true });
+  });
+
   test("renders Edit event title and loads event data", async () => {
-    eventService.getEventById.mockResolvedValue(existingEvent);
     renderPage({
       path: "/edit-event/e1",
       routePattern: "/edit-event/:eventId",
@@ -259,7 +259,6 @@ describe("CreateEventPage – edit mode", () => {
   });
 
   test("title and price inputs are disabled in edit mode", async () => {
-    eventService.getEventById.mockResolvedValue(existingEvent);
     renderPage({
       path: "/edit-event/e1",
       routePattern: "/edit-event/:eventId",
@@ -274,7 +273,6 @@ describe("CreateEventPage – edit mode", () => {
   });
 
   test("calls updateEvent on submit and navigates to dashboard", async () => {
-    eventService.getEventById.mockResolvedValue(existingEvent);
     const user = userEvent.setup();
     renderPage({
       path: "/edit-event/e1",
@@ -295,7 +293,7 @@ describe("CreateEventPage – edit mode", () => {
     await user.click(submitBtn);
 
     await waitFor(() => {
-      expect(eventService.updateEvent).toHaveBeenCalledWith(
+      expect(mockedEventService.updateEvent).toHaveBeenCalledWith(
         expect.objectContaining({ id: "e1", location: "New Venue" }),
       );
     });
@@ -313,7 +311,7 @@ describe("CreateEventPage – edit mode", () => {
   });
 
   test("shows error toast when event is not found", async () => {
-    eventService.getEventById.mockResolvedValue(null);
+    mockedEventService.getEventById.mockResolvedValue(null);
     renderPage({
       path: "/edit-event/unknown",
       routePattern: "/edit-event/:eventId",
@@ -330,9 +328,9 @@ describe("CreateEventPage – edit mode", () => {
   });
 });
 
-describe("CreateEventPage – category loading error", () => {
+describe("CreateEventPage - category loading error", () => {
   test("shows error toast when categories fail to load", async () => {
-    eventService.getCategories.mockRejectedValue(new Error("Network error"));
+    mockedEventService.getCategories.mockRejectedValue(new Error("Network error"));
     renderPage();
 
     expect(

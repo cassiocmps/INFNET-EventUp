@@ -10,7 +10,7 @@ import Toast from "../../components/Toast";
 import { useCreateEvent } from "../../hooks/useCreateEvent";
 import styles from "./CreateEventPage.module.css";
 
-export default function CreateEventPage() {
+export default function CreateEventPage(): React.ReactElement {
   const {
     isEditMode,
     isLoadingEvent,

@@ -1,13 +1,15 @@
 import { render } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
+import type { AuthContextValue, User } from "../../types";
 import { AuthContext } from "../../contexts/AuthContext";
 import CreateEventPage from "../../pages/CreateEvent";
 
-export const mockOrganizer = {
+export const mockOrganizer: User = {
   id: "u1",
   name: "Alice Organizer",
   email: "alice@test.com",
   role: "organizer",
+  passwordHash: "",
   favorites: [],
   registrations: [],
 };
@@ -22,6 +24,11 @@ export function renderPage({
   isOrganizer = true,
   path = "/create-event",
   routePattern = "/create-event",
+}: {
+  user?: User | null;
+  isOrganizer?: boolean;
+  path?: string;
+  routePattern?: string;
 } = {}) {
   const authValue = {
     currentUser: user,
@@ -29,7 +36,7 @@ export function renderPage({
     isLoading: false,
     login: jest.fn(),
     logout: jest.fn(),
-  };
+  } as unknown as AuthContextValue;
 
   return render(
     <AuthContext.Provider value={authValue}>
