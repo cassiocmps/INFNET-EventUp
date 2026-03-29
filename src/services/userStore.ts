@@ -1,13 +1,15 @@
+import type { User } from "types";
+
 const USERS_STORAGE_KEY = "mockUsers";
 
-let usersStore = null;
+let usersStore: User[] | null = null;
 
-function persistUsers(users) {
+function persistUsers(users: User[]): void {
   usersStore = users;
   localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
 }
 
-async function getUsers() {
+async function getUsers(): Promise<User[]> {
   if (usersStore !== null) {
     return usersStore;
   }
@@ -15,7 +17,7 @@ async function getUsers() {
   const storedUsers = localStorage.getItem(USERS_STORAGE_KEY);
   if (storedUsers) {
     try {
-      const parsed = JSON.parse(storedUsers);
+      const parsed = JSON.parse(storedUsers) as User[];
       const isStale = parsed.some((u) => !u.id);
       if (!isStale) {
         usersStore = parsed;
@@ -30,7 +32,7 @@ async function getUsers() {
 
   try {
     const response = await fetch("/api/users.json");
-    const data = await response.json();
+    const data = (await response.json()) as { users: User[] };
     usersStore = data.users || [];
     persistUsers(usersStore);
     return usersStore;
@@ -40,7 +42,7 @@ async function getUsers() {
   }
 }
 
-async function updateUserProfile(updatedUser) {
+async function updateUserProfile(updatedUser: User): Promise<User> {
   const users = await getUsers();
   const targetEmail = updatedUser.email?.trim().toLowerCase();
   const userIndex = users.findIndex(

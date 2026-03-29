@@ -1,15 +1,46 @@
+import type { Category, Event, EventCategory, EventStatus, User } from "types";
 import { userStore } from "./userStore";
 import { notificationService } from "./notificationService";
 
-let eventsStore = null;
-let categoriesStore = null;
+interface CreateEventInput {
+  title: string;
+  description: string;
+  category: string;
+  date: string;
+  time: string;
+  location: string;
+  capacity: number;
+  price: number;
+  organizerId?: string;
+  organizerName?: string;
+}
+
+interface UpdateEventInput {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  date: string;
+  time: string;
+  location: string;
+  capacity: number;
+  price: number;
+}
+
+interface UserEventInput {
+  user: User;
+  eventId: string;
+}
+
+let eventsStore: Event[] | null = null;
+let categoriesStore: Category[] | null = null;
 const SIMULATED_LATENCY_MS = 1000;
 
-function sleep(ms) {
+function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function getEvents() {
+async function getEvents(): Promise<Event[]> {
   await sleep(SIMULATED_LATENCY_MS);
 
   if (eventsStore !== null) {
@@ -18,7 +49,7 @@ async function getEvents() {
 
   try {
     const response = await fetch("/api/events.json");
-    const data = await response.json();
+    const data = (await response.json()) as { events: Event[] };
     eventsStore = data.events || [];
     return eventsStore.filter((event) => event.status !== "cancelled");
   } catch (error) {
@@ -27,7 +58,7 @@ async function getEvents() {
   }
 }
 
-async function getCategories() {
+async function getCategories(): Promise<Category[]> {
   await sleep(SIMULATED_LATENCY_MS);
 
   if (categoriesStore !== null) {
@@ -36,7 +67,7 @@ async function getCategories() {
 
   try {
     const response = await fetch("/api/categories.json");
-    const data = await response.json();
+    const data = (await response.json()) as { categories: Category[] };
     categoriesStore = data.categories || [];
     return categoriesStore;
   } catch (error) {
@@ -56,7 +87,7 @@ async function createEvent({
   price,
   organizerId,
   organizerName,
-}) {
+}: CreateEventInput): Promise<{ success: boolean; event: Event }> {
   if (!title || !description || !category) {
     throw new Error("Title, description, and category are required");
   }
@@ -64,11 +95,11 @@ async function createEvent({
   try {
     const events = await getEvents();
 
-    const newEvent = {
+    const newEvent: Event = {
       id: Date.now().toString(),
       title: title.trim(),
       description: description.trim(),
-      category,
+      category: category as EventCategory,
       date,
       time,
       location,
@@ -78,7 +109,7 @@ async function createEvent({
       organizerName: organizerName || "",
       enrolled: 0,
       createdAt: new Date().toISOString(),
-      status: "active",
+      status: "active" as EventStatus,
     };
 
     eventsStore = [...events, newEvent];
@@ -90,12 +121,12 @@ async function createEvent({
   }
 }
 
-async function getEventById(id) {
+async function getEventById(id: string): Promise<Event | null> {
   const events = await getEvents();
   return events.find((event) => event.id === id) || null;
 }
 
-async function getEventsByOrganizer(organizerId) {
+async function getEventsByOrganizer(organizerId: string): Promise<Event[]> {
   const events = await getEvents();
   return events.filter((event) => event.organizerId === organizerId);
 }
@@ -110,7 +141,7 @@ async function updateEvent({
   location,
   capacity,
   price,
-}) {
+}: UpdateEventInput): Promise<{ success: boolean }> {
   await sleep(SIMULATED_LATENCY_MS);
 
   const events = await getEvents();
@@ -122,7 +153,7 @@ async function updateEvent({
           ...event,
           title: title.trim(),
           description: description.trim(),
-          category,
+          category: category as EventCategory,
           date,
           time,
           location,
@@ -133,7 +164,7 @@ async function updateEvent({
   );
 
   if (oldEvent) {
-    const changedFields = [];
+    const changedFields: string[] = [];
     if (oldEvent.date !== date) changedFields.push("date");
     if (oldEvent.time !== time) changedFields.push("time");
     if (oldEvent.location !== location) changedFields.push("location");
@@ -151,14 +182,14 @@ async function updateEvent({
   return { success: true };
 }
 
-async function cancelEvent(eventId) {
+async function cancelEvent(eventId: string): Promise<{ success: boolean }> {
   await sleep(SIMULATED_LATENCY_MS);
 
   const events = await getEvents();
   const event = events.find((e) => e.id === eventId);
 
   eventsStore = events.map((e) =>
-    e.id === eventId ? { ...e, status: "cancelled" } : e,
+    e.id === eventId ? { ...e, status: "cancelled" as EventStatus } : e,
   );
 
   if (event) {
@@ -173,7 +204,7 @@ async function cancelEvent(eventId) {
   return { success: true };
 }
 
-async function toggleFavoriteForUser({ user, eventId }) {
+async function toggleFavoriteForUser({ user, eventId }: UserEventInput): Promise<User> {
   if (!user || !eventId) {
     throw new Error("User and eventId are required");
   }
@@ -186,7 +217,7 @@ async function toggleFavoriteForUser({ user, eventId }) {
     ? currentFavorites.filter((id) => id !== eventId)
     : [...currentFavorites, eventId];
 
-  const updatedUser = {
+  const updatedUser: User = {
     ...user,
     favorites: updatedFavorites,
   };
@@ -194,7 +225,7 @@ async function toggleFavoriteForUser({ user, eventId }) {
   return userStore.updateUserProfile(updatedUser);
 }
 
-async function registerForEventForUser({ user, eventId }) {
+async function registerForEventForUser({ user, eventId }: UserEventInput): Promise<User> {
   if (!user || !eventId) {
     throw new Error("User and eventId are required");
   }
@@ -206,7 +237,7 @@ async function registerForEventForUser({ user, eventId }) {
     return user;
   }
 
-  const updatedUser = {
+  const updatedUser: User = {
     ...user,
     registrations: [...currentRegistrations, eventId],
   };
@@ -214,7 +245,7 @@ async function registerForEventForUser({ user, eventId }) {
   return userStore.updateUserProfile(updatedUser);
 }
 
-async function unregisterFromEventForUser({ user, eventId }) {
+async function unregisterFromEventForUser({ user, eventId }: UserEventInput): Promise<User> {
   if (!user || !eventId) {
     throw new Error("User and eventId are required");
   }
@@ -222,7 +253,7 @@ async function unregisterFromEventForUser({ user, eventId }) {
   await sleep(SIMULATED_LATENCY_MS);
 
   const currentRegistrations = user.registrations || [];
-  const updatedUser = {
+  const updatedUser: User = {
     ...user,
     registrations: currentRegistrations.filter((id) => id !== eventId),
   };
@@ -242,3 +273,4 @@ export const eventService = {
   registerForEventForUser,
   unregisterFromEventForUser,
 };
+

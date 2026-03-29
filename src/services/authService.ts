@@ -1,13 +1,21 @@
+import type { Role, User, UserRole } from "types";
 import { userStore } from "./userStore";
 
-let rolesStore = null;
+interface SignUpProfile {
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+}
+
+let rolesStore: Role[] | null = null;
 const SIMULATED_LATENCY_MS = 1000;
 
-function sleep(ms) {
+function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function hashPassword(password) {
+async function hashPassword(password: string): Promise<string> {
   const content = new TextEncoder().encode(password);
   const digest = await window.crypto.subtle.digest("SHA-256", content);
   return Array.from(new Uint8Array(digest))
@@ -15,7 +23,10 @@ async function hashPassword(password) {
     .join("");
 }
 
-async function signIn(email, password) {
+async function signIn(
+  email: string,
+  password: string,
+): Promise<{ success: boolean; user: User }> {
   if (!email || !password) {
     throw new Error("Email and password are required");
   }
@@ -42,7 +53,9 @@ async function signIn(email, password) {
   }
 }
 
-async function signUp(profile) {
+async function signUp(
+  profile: SignUpProfile,
+): Promise<{ success: boolean; user: Omit<User, "id"> }> {
   if (!profile.name || !profile.email || !profile.password || !profile.role) {
     throw new Error("All fields are required");
   }
@@ -51,7 +64,7 @@ async function signUp(profile) {
 
   try {
     const signupResponse = await fetch("/api/signup.json");
-    const signupData = await signupResponse.json();
+    const signupData = (await signupResponse.json()) as { accepted: boolean };
 
     if (!signupData.accepted) {
       throw new Error("Sign up not accepted by server");
@@ -59,17 +72,17 @@ async function signUp(profile) {
 
     const passwordHash = await hashPassword(profile.password);
 
-    const newUser = {
+    const newUser: Omit<User, "id"> = {
       name: profile.name.trim(),
       email: profile.email.trim().toLowerCase(),
-      role: profile.role,
+      role: profile.role as UserRole,
       passwordHash,
       favorites: [],
       registrations: [],
     };
 
     const users = await userStore.getUsers();
-    userStore.persistUsers([...users, newUser]);
+    userStore.persistUsers([...users, newUser as User]);
 
     return { success: true, user: newUser };
   } catch (error) {
@@ -77,7 +90,7 @@ async function signUp(profile) {
   }
 }
 
-async function getRoles() {
+async function getRoles(): Promise<Role[]> {
   await sleep(SIMULATED_LATENCY_MS);
 
   if (rolesStore !== null) {
@@ -86,7 +99,7 @@ async function getRoles() {
 
   try {
     const response = await fetch("/api/roles.json");
-    const data = await response.json();
+    const data = (await response.json()) as { roles: Role[] };
     rolesStore = data.roles || [];
     return rolesStore;
   } catch (error) {
