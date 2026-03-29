@@ -1,9 +1,23 @@
 import { ChevronLeft, UserPlus } from "lucide-react";
+import type { Role, SignUpFormData, SignUpFormErrors } from "types";
 import FormInput from "../../components/FormInput";
 import PrimaryButton from "../../components/PrimaryButton";
 import RoleSelector from "../../components/RoleSelector";
 import SecondaryButton from "../../components/SecondaryButton";
 import styles from "./SignUpPage.module.css";
+
+interface SignUpFormProps {
+  form: SignUpFormData;
+  errors: SignUpFormErrors;
+  roles: Role[];
+  selectedRole: string;
+  canSubmit: boolean;
+  isSubmitting: boolean;
+  handleChange: React.ChangeEventHandler<HTMLInputElement>;
+  handleSubmit: React.FormEventHandler<HTMLFormElement>;
+  handleCancel: () => void;
+  setSelectedRole: (roleId: string) => void;
+}
 
 export default function SignUpForm({
   form,
@@ -16,7 +30,7 @@ export default function SignUpForm({
   handleSubmit,
   handleCancel,
   setSelectedRole,
-}) {
+}: SignUpFormProps): React.ReactElement {
   return (
     <form className={styles.form} onSubmit={handleSubmit} noValidate>
       <RoleSelector

@@ -4,7 +4,7 @@ import Toast from "../../components/Toast";
 import SignUpForm from "./SignUpForm";
 import { useSignUp } from "../../hooks/useSignUp";
 
-export default function SignUpPage() {
+export default function SignUpPage(): React.ReactElement {
   const {
     form,
     errors,
