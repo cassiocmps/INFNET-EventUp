@@ -8,7 +8,7 @@
   border: none;
   border-radius: 50%;
   background: transparent;
-  color: #475569;
+  color: var(--text-secondary);
   cursor: pointer;
   transition:
     background 0.15s,
@@ -17,12 +17,12 @@
 }
 
 .bell:hover {
-  background: #f1f5f9;
-  color: #0f172a;
+  background: var(--surface-raised);
+  color: var(--text);
 }
 
 .bell:focus-visible {
-  outline: 2px solid #6366f1;
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
@@ -34,8 +34,8 @@
   height: 1.1rem;
   padding: 0 0.25rem;
   border-radius: 9999px;
-  background: #ef4444;
-  color: #fff;
+  background: var(--error);
+  color: var(--surface);
   font-size: 0.65rem;
   font-weight: 700;
   line-height: 1.1rem;

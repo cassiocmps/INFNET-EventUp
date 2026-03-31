@@ -1,6 +1,6 @@
 .card {
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 1.25rem 1.5rem;
   display: flex;
@@ -10,7 +10,7 @@
 }
 
 .card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px var(--shadow);
 }
 
 .header {
@@ -21,8 +21,8 @@
 }
 
 .category {
-  background: #6366f1;
-  color: #fff;
+  background: var(--accent);
+  color: var(--surface);
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
   font-size: 0.75rem;
@@ -37,7 +37,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  color: #64748b;
+  color: var(--text-muted);
   font-size: 0.875rem;
   font-weight: 500;
   white-space: nowrap;
@@ -45,7 +45,7 @@
 
 .title {
   margin: 0;
-  color: #0f172a;
+  color: var(--text);
   font-size: 1.1rem;
   font-weight: 600;
   line-height: 1.35;
@@ -56,11 +56,11 @@
   align-items: center;
   gap: 0.3rem;
   font-size: 0.875rem;
-  color: #475569;
+  color: var(--text-secondary);
 }
 
 .revenue strong {
-  color: #16a34a;
+  color: var(--success);
   font-weight: 600;
 }
 

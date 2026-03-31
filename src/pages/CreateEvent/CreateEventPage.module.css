@@ -10,7 +10,7 @@
   align-items: center;
   gap: 0.75rem;
   padding: 3rem 1rem;
-  color: #64748b;
+  color: var(--text-muted);
   font-size: 1rem;
 }
 
@@ -26,5 +26,5 @@
 
 .loadingSpinner {
   animation: spin 1s linear infinite;
-  color: #6366f1;
+  color: var(--accent);
 }

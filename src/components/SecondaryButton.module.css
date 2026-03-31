@@ -1,7 +1,7 @@
 .button {
   border: 2px solid transparent;
-  background-color: #ffffff;
-  color: #fbbf24;
+  background-color: var(--surface);
+  color: var(--primary-tint);
   border-radius: 0.75rem;
   padding: 0.45rem 0.8rem;
   font-size: 0.85rem;
@@ -20,11 +20,11 @@
 }
 
 .button:hover {
-  border-color: #fbbf24;
+  border-color: var(--primary-tint);
 }
 
 .button:focus {
-  outline: 2px solid #fbbf24;
+  outline: 2px solid var(--primary-tint);
   outline-offset: 2px;
 }
 

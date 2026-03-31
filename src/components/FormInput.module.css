@@ -7,37 +7,37 @@
 .label {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #0f172a;
+  color: var(--text);
 }
 
 .input {
   width: 100%;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border-input);
   border-radius: 0.75rem;
   padding: 0.72rem 0.85rem;
   font-size: 0.98rem;
-  color: #0f172a;
-  background-color: #ffffff;
+  color: var(--text);
+  background-color: var(--surface);
   transition: border-color 0.2s ease;
 }
 
 .input:focus {
-  border-color: #f59e0b;
+  border-color: var(--primary);
   outline: none;
 }
 
 .inputError {
-  border-color: #dc2626;
+  border-color: var(--error);
 }
 
 .input:disabled {
-  background: #f1f5f9;
-  color: #94a3b8;
+  background: var(--surface-raised);
+  color: var(--text-faint);
   cursor: not-allowed;
 }
 
 .errorText {
-  color: #b91c1c;
+  color: var(--error-text);
   font-size: 0.78rem;
   font-weight: 500;
 }

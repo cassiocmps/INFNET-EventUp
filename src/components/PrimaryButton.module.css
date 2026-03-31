@@ -2,8 +2,8 @@
   width: 100%;
   border: none;
   border-radius: 0.75rem;
-  background-color: #f59e0b;
-  color: #0f172a;
+  background-color: var(--primary);
+  color: var(--text);
   padding: 0.82rem 1rem;
   font-size: 0.95rem;
   font-weight: 700;
@@ -25,18 +25,18 @@
 }
 
 .button:hover:not(:disabled) {
-  background-color: #f59e0b;
+  background-color: var(--primary);
   box-shadow: 0 8px 16px rgba(245, 158, 11, 0.35);
   transform: translateY(-2px);
 }
 
 .button:focus {
-  outline: 2px solid #f59e0b;
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
 
 .button:disabled {
-  background-color: #d1d5db;
-  color: #9ca3af;
+  background-color: var(--border-input);
+  color: var(--text-faint);
   cursor: not-allowed;
 }

@@ -4,8 +4,8 @@
   right: 0;
   z-index: 200;
   width: min(22rem, 90vw);
-  background: #fff;
-  border: 1px solid #e2e8f0;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
   overflow: hidden;
@@ -16,14 +16,14 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.875rem 1rem;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--surface-raised);
 }
 
 .title {
   margin: 0;
   font-size: 0.9375rem;
   font-weight: 600;
-  color: #0f172a;
+  color: var(--text);
 }
 
 .empty {
@@ -32,7 +32,7 @@
   align-items: center;
   gap: 0.75rem;
   padding: 2.5rem 1rem;
-  color: #94a3b8;
+  color: var(--text-faint);
   font-size: 0.9375rem;
 }
 
@@ -53,8 +53,8 @@
   align-items: flex-start;
   gap: 0.625rem;
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid #f8fafc;
-  background: #fff;
+  border-bottom: 1px solid var(--bg);
+  background: var(--surface);
   transition: background 0.1s;
 }
 
@@ -63,15 +63,15 @@
 }
 
 .item:hover {
-  background: #f8fafc;
+  background: var(--bg);
 }
 
 .unread {
-  background: #fefce8;
+  background: var(--unread-bg);
 }
 
 .unread:hover {
-  background: #fef9c3;
+  background: var(--unread-bg-hover);
 }
 
 .itemIcon {
@@ -87,7 +87,7 @@
 .itemMessage {
   margin: 0 0 0.25rem 0;
   font-size: 0.875rem;
-  color: #1e293b;
+  color: var(--text);
   line-height: 1.4;
   word-break: break-word;
 }
@@ -98,7 +98,7 @@
 
 .itemTime {
   font-size: 0.75rem;
-  color: #94a3b8;
+  color: var(--text-faint);
 }
 
 .dot {
@@ -106,6 +106,6 @@
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
-  background: #6366f1;
+  background: var(--accent);
   margin-top: 0.35rem;
 }

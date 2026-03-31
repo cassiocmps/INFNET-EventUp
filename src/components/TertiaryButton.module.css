@@ -1,7 +1,7 @@
 .button {
   border: none;
   background: transparent;
-  color: #0f172a;
+  color: var(--text);
   font-size: 0.9rem;
   font-weight: 600;
   text-decoration: underline;
@@ -22,11 +22,11 @@
 }
 
 .button:hover {
-  color: #fbbf24;
+  color: var(--primary-tint);
 }
 
 .button:focus {
-  outline: 2px solid #fbbf24;
+  outline: 2px solid var(--primary-tint);
   outline-offset: 2px;
   border-radius: 0.35rem;
 }
